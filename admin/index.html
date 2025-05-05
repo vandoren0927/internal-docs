@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Content Manager</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
+    <script>
+      fetch('/admin/config.json')
+        .then(response => response.json())
+        .then(config => window.CMS.init({ config }))
+        .catch(error => console.error("Config load error:", error));
+    </script>
+  </body>
+</html>
