@@ -11,7 +11,7 @@ const config: Config = {
 
   // GitHub Pages 網址
   url: 'https://vandoren0927.github.io',
-  baseUrl: '/',                 // 使用者站（根路徑）
+  baseUrl: '/internal-docs/',                 // 使用者站（根路徑）
 
   trailingSlash: true,
   deploymentBranch: 'gh-pages',
@@ -34,7 +34,7 @@ const config: Config = {
       'classic',
       {
         docs: {
-          sidebarPath: false,
+          sidebarPath: './sidebars.ts',
           routeBasePath: 'kb',          // ★ 替換原本的 /docs 前綴
           editUrl: 'https://github.com/vandoren0927/internal-docs/tree/main/',
         },
