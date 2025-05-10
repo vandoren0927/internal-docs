@@ -5,12 +5,29 @@
     <title>Content Manager</title>
     <!-- 1) 先告诉 CMS：等我手动初始化 -->
     <script>window.CMS_MANUAL_INIT = true;</script>
-    <!-- 2) 再载入 Netlify-CMS 核心脚本 -->
+    <!-- 2) 加载 Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- 3) 再载入 Netlify-CMS 核心脚本 -->
     <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
   </head>
   <body>
-    <!-- 3) 最后读取你的 JSON 配置，并手动 init -->
     <script>
+      // 如果启用了 Netlify Identity + Git Gateway，就会有 window.netlifyIdentity
+      if (window.netlifyIdentity) {
+        // 等 Widget 初始化完
+        window.netlifyIdentity.on("init", user => {
+          // 如果未经登录，则监听 login 事件
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              // 登录后重定向到 /admin/，让 CMS 可以读取配置并初始化
+              window.location.href = "/admin/";
+            });
+          }
+        });
+        window.netlifyIdentity.init();
+      }
+
+      // 手动读取 config.json 并初始化 CMS
       fetch('config.json')
         .then((response) => {
           if (!response.ok) {
@@ -19,9 +36,6 @@
           return response.json();
         })
         .then((config) => {
-          // 一个备用：如果你希望让 CMS 知道你的站点根路径
-          // config.public_folder = '/img/uploads';
-          // config.media_folder = 'static/img/uploads';
           CMS.init({ config });
         })
         .catch((err) => {
