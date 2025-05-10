@@ -34,7 +34,7 @@ const config: Config = {
       'classic',
       {
         docs: {
-          sidebarPath: './sidebars.ts',
+          sidebarPath: false,
           routeBasePath: 'kb',          // ★ 替換原本的 /docs 前綴
           editUrl: 'https://github.com/vandoren0927/internal-docs/tree/main/',
         },
