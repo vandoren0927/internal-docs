@@ -1,61 +1,46 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
+/** Docusaurus 站點設定（routeBasePath 改為 "kb"） */
 const config: Config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  // ————————————————— 基本資訊 —————————————————
+  title: 'Internal Docs',
+  tagline: 'Company Knowledge Base',
   favicon: 'img/favicon.ico',
 
-  // Set the production url of your site here
+  // GitHub Pages 網址
   url: 'https://vandoren0927.github.io',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/',                 // 使用者站（根路徑）
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'vandoren0927', // Usually your GitHub org/user name.
-  projectName: 'internal-docs', // Usually your repo name.
+  trailingSlash: true,
+  deploymentBranch: 'gh-pages',
+  organizationName: 'vandoren0927',
+  projectName: 'internal-docs',
 
+  // ————————————————— Links 與錯誤處理 —————————————————
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
+  // ————————————————— i18n —————————————————
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
   },
 
+  // ————————————————— 預設模板 —————————————————
   presets: [
     [
       'classic',
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/vandoren0927/internal-docs/tree/main/',
+          routeBasePath: 'kb',          // ★ 替換原本的 /docs 前綴
+          editUrl: 'https://github.com/vandoren0927/internal-docs/tree/main/',
         },
         blog: {
           showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/vandoren0927/internal-docs/tree/main/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
+          editUrl: 'https://github.com/vandoren0927/internal-docs/tree/main/',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -64,28 +49,16 @@ const config: Config = {
     ],
   ],
 
+  // ————————————————— Theme 設定 —————————————————
   themeConfig: {
-    // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'My Site',
-      logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
-      },
+      title: 'Internal Docs',
+      logo: { alt: 'Site Logo', src: 'img/logo.svg' },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Tutorial',
-        },
-        {to: '/blog', label: 'Blog', position: 'left'},
-        {
-          href: 'https://github.com/vandoren0927/internal-docs',
-          label: 'GitHub',
-          position: 'right',
-        },
+        { type: 'docSidebar', sidebarId: 'tutorialSidebar', position: 'left', label: 'Docs' },
+        { to: '/blog', label: 'Blog', position: 'left' },
+        { href: 'https://github.com/vandoren0927/internal-docs', label: 'GitHub', position: 'right' },
       ],
     },
     footer: {
@@ -93,45 +66,25 @@ const config: Config = {
       links: [
         {
           title: 'Docs',
-          items: [
-            {
-              label: 'Tutorial',
-              to: '/docs/intro',
-            },
-          ],
+          items: [{ label: 'Tutorial', to: '/kb/intro' }],
         },
         {
           title: 'Community',
           items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
-            },
+            { label: 'Stack Overflow', href: 'https://stackoverflow.com/questions/tagged/docusaurus' },
+            { label: 'Discord', href: 'https://discordapp.com/invite/docusaurus' },
+            { label: 'X', href: 'https://x.com/docusaurus' },
           ],
         },
         {
           title: 'More',
           items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/vandoren0927/internal-docs',
-            },
+            { label: 'Blog', to: '/blog' },
+            { label: 'GitHub', href: 'https://github.com/vandoren0927/internal-docs' },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Internal Docs. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
