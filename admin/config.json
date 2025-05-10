@@ -1,7 +1,10 @@
 {
   "backend": {
-    "name": "git-gateway",
-    "branch": "main"
+    "name": "github",
+    "repo": "vandoren0927/internal-docs",
+    "branch": "main",
+    "auth_type": "oauth",
+    "app_id": "Ov23liiERxiIRm1Wr1K2"
   },
 
   "media_folder": "static/img/uploads",
