@@ -1,3 +1,4 @@
+config.json
 {
   "backend": {
     "name": "github",
@@ -27,3 +28,41 @@
     }
   ]
 }
+
+
+index.html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Content Manager</title>
+    <!-- 1) 先告诉 CMS：等我手动初始化 -->
+    <script>window.CMS_MANUAL_INIT = true;</script>
+    <!-- 2) 再载入 Netlify-CMS 核心脚本 -->
+    <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
+  </head>
+  <body>
+    <!-- 3) 最后读取你的 JSON 配置，并手动 init -->
+    <script>
+      fetch('config.json')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Could not load config.json: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((config) => {
+          // 一个备用：如果你希望让 CMS 知道你的站点根路径
+          // config.public_folder = '/img/uploads';
+          // config.media_folder = 'static/img/uploads';
+          CMS.init({ config });
+        })
+        .catch((err) => {
+          console.error('Config load error:', err);
+          document.body.innerHTML =
+            '<h1 style="color:red; text-align:center; margin-top:2rem;">CMS 配置载入失败</h1>' +
+            `<pre style="color:red; text-align:center;">${err.message}</pre>`;
+        });
+    </script>
+  </body>
+</html>
