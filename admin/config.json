@@ -4,8 +4,8 @@
   "repo": "vandoren0927/internal-docs",
   "branch": "main",
   "auth_type": "oauth",
-  "base_url": "https://reliable-figolla-26dba3.netlify.app",
-  "auth_endpoint": "api/auth"
+  "base_url": "https://internal-cms-oauth-provider.netlify.app",
+  "auth_endpoint": "/.netlify/functions/auth"
   },
 
   "media_folder": "static/img/uploads",
