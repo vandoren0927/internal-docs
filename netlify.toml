@@ -1,5 +1,0 @@
-[identity]
-  enabled = true
-
-[gateway]
-  branch = "main"
