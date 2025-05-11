@@ -3,13 +3,31 @@
   <head>
     <meta charset="utf-8" />
     <title>Content Manager</title>
-    <!-- 移除 CMS_MANUAL_INIT，改用自動初始化 -->
-    <!-- 移除 Netlify Identity Widget -->
-    <!-- 加载 Decap CMS 核心脚本 -->
+    <!-- ✅ 通知 CMS 等我手動初始化 -->
+    <script>window.CMS_MANUAL_INIT = true;</script>
+    <!-- ❌ 移除 Netlify Identity Widget -->
+    <!-- ✅ 載入 Decap CMS 核心腳本 -->
     <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
   </head>
   <body>
-    <!-- CMS 會自動從 /admin/config.json 讀取設定並初始化 -->
-    <h1 style="text-align:center; margin-top:2rem;">🚀 CMS 正在載入中...</h1>
+    <script>
+      // ✅ 手動讀取 config.json 並初始化 CMS
+      fetch('config.json')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Could not load config.json: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((config) => {
+          CMS.init({ config });
+        })
+        .catch((err) => {
+          console.error('Config load error:', err);
+          document.body.innerHTML =
+            '<h1 style="color:red; text-align:center; margin-top:2rem;">CMS 配置載入失敗</h1>' +
+            `<pre style="color:red; text-align:center;">${err.message}</pre>`;
+        });
+    </script>
   </body>
 </html>
