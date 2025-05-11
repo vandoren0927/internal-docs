@@ -1,108 +1,50 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
+<!doctype html>
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Content Manager Debug</title>
-    <style>
-      body {
-        font-family: system-ui, sans-serif;
-        padding: 2rem;
-        background: #f5f5f5;
-      }
-      .log {
-        background: #1e1e1e;
-        color: #0f0;
-        padding: 1rem;
-        margin-top: 2rem;
-        font-family: monospace;
-        font-size: 0.9rem;
-        white-space: pre-wrap;
-        overflow-x: auto;
-        border-radius: 5px;
-      }
-    </style>
-    <script>
-      window.CMS_MANUAL_INIT = true;
-    </script>
+    <meta charset="utf-8" />
+    <title>Content Manager</title>
+    <!-- 1) 先告诉 CMS：等我手动初始化 -->
+    <script>window.CMS_MANUAL_INIT = true;</script>
+    <!-- 2) 加载 Netlify Identity Widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- 3) 再载入 Netlify-CMS 核心脚本 -->
     <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
   </head>
   <body>
-    <h1>🚀 CMS 除錯模式啟動</h1>
-    <div id="output" class="log">啟動中...</div>
-
     <script>
-      const log = (...args) => {
-        const out = document.getElementById('output');
-        out.textContent += '\n' + args.map(x => (typeof x === 'object' ? JSON.stringify(x, null, 2) : x)).join(' ');
-        console.log(...args);
-      };
-
-      const showError = (msg) => {
-        const out = document.getElementById('output');
-        out.style.color = '#f00';
-        out.style.background = '#111';
-        out.textContent += '\n\n❌ 錯誤：' + msg;
-      };
-
-      log('🟡 啟動 Netlify CMS 除錯...');
-
+      // 如果启用了 Netlify Identity + Git Gateway，就会有 window.netlifyIdentity
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on('init', (user) => {
-          log('🔍 Netlify Identity 初始化完成：', user);
-
+        // 等 Widget 初始化完
+        window.netlifyIdentity.on("init", user => {
+          // 如果未经登录，则监听 login 事件
           if (!user) {
-            log('🔐 尚未登入，等待使用者登入...');
-            window.netlifyIdentity.on('login', () => {
-              log('✅ 使用者登入成功，重新載入 CMS...');
-              window.location.reload();
+            window.netlifyIdentity.on("login", () => {
+              // 登录后重定向到 /admin/，让 CMS 可以读取配置并初始化
+              window.location.href = window.location.pathname;
             });
-          } else {
-            log('✅ 使用者已登入');
           }
         });
         window.netlifyIdentity.init();
-      } else {
-        showError('⚠️ 找不到 netlifyIdentity，請確認身份驗證元件是否加載成功');
       }
 
-      // 嘗試讀取 Git Gateway 使用者資料
-      fetch('/.netlify/git/github/user')
-        .then(r => {
-          if (!r.ok) {
-            throw new Error(`Git Gateway 回應錯誤：${r.status} ${r.statusText}`);
-          }
-          return r.json();
-        })
-        .then(data => {
-          log('🔁 Git Gateway 使用者：', data);
-        })
-        .catch(err => {
-          showError('Git Gateway 使用者讀取失敗 → ' + err.message);
-        });
-
-      // 載入 config.json 並初始化 CMS
+      // 手动读取 config.json 并初始化 CMS
       fetch('config.json')
         .then((response) => {
           if (!response.ok) {
-            throw new Error(`無法讀取 config.json：${response.status}`);
+            throw new Error(`Could not load config.json: ${response.status}`);
           }
           return response.json();
         })
         .then((config) => {
-          log('⚙️ CMS 配置讀取成功：', config);
           CMS.init({ config });
-
-          CMS.registerEventListener({
-            name: '*',
-            handler: ({ name, payload }) => {
-              log(`📦 CMS Event - ${name}`, payload);
-            },
-          });
         })
         .catch((err) => {
-          showError('CMS 初始化失敗 → ' + err.message);
+          console.error('Config load error:', err);
+          document.body.innerHTML =
+            '<h1 style="color:red; text-align:center; margin-top:2rem;">CMS 配置载入失败</h1>' +
+            `<pre style="color:red; text-align:center;">${err.message}</pre>`;
         });
     </script>
   </body>
 </html>
+
