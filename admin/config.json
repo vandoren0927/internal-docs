@@ -1,11 +1,14 @@
 {
   "backend": {
     "name": "git-gateway",
+    "repo": "vandoren0927/internal-docs",
     "branch": "main"
   },
 
   "media_folder": "static/img/uploads",
   "public_folder": "/img/uploads",
+  "auth_endpoint": "/.netlify/identity",
+  "base_url": "",
   "collections": [
     {
       "name": "docs",
