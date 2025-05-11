@@ -2,24 +2,23 @@
   "backend": {
     "name": "git-gateway",
     "repo": "vandoren0927/internal-docs",
-    "branch": "main"
+    "branch": "main",
+    "auth_endpoint": "/.netlify/identity",
+    "base_url": ""
   },
-
   "media_folder": "static/img/uploads",
   "public_folder": "/img/uploads",
-  "auth_endpoint": "/.netlify/identity",
-  "base_url": "",
   "collections": [
     {
       "name": "docs",
       "label": "Documents",
       "folder": "docs",
       "create": true,
-      "slug": "{{slug}}",                
+      "slug": "{{slug}}",
       "fields": [
-        { "label": "Title",  "name": "title",  "widget": "string" },
-        { "label": "Slug (optional, 無填將用預設)",  "name": "slug", "widget": "string", "required": false },
-        { "label": "Body",   "name": "body",   "widget": "markdown" }
+        { "label": "Title", "name": "title", "widget": "string" },
+        { "label": "Slug (optional, 無填將用預設)", "name": "slug", "widget": "string", "required": false },
+        { "label": "Body", "name": "body", "widget": "markdown" }
       ]
     }
   ]
