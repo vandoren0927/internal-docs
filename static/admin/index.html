@@ -20,7 +20,7 @@
           if (!user) {
             window.netlifyIdentity.on("login", () => {
               // 登录后重定向到 /admin/，让 CMS 可以读取配置并初始化
-              window.location.href = "/admin/";
+              window.location.href = window.location.pathname;
             });
           }
         });
