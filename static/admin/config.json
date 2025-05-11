@@ -1,10 +1,14 @@
 {
   "backend": {
-    "name": "git-gateway",
-    "branch": "main"
+    "name": "github",
+    "repo": "vandoren0927/internal-docs",
+    "branch": "main",
+    "auth_scope": "repo"
   },
   "media_folder": "static/img/uploads",
   "public_folder": "/img/uploads",
+  "site_url": "https://admirable-bombolone-23a5ca.netlify.app/",
+  "logo_url": "https://unpkg.com/netlify-cms@^2.10.0/static/media/logo.62b44c31.svg",
   "collections": [
     {
       "name": "docs",
@@ -14,7 +18,12 @@
       "slug": "{{slug}}",
       "fields": [
         { "label": "Title", "name": "title", "widget": "string" },
-        { "label": "Slug (optional, 無填將用預設)", "name": "slug", "widget": "string", "required": false },
+        {
+          "label": "Slug (optional, 無填將用預設)",
+          "name": "slug",
+          "widget": "string",
+          "required": false
+        },
         { "label": "Body", "name": "body", "widget": "markdown" }
       ]
     }
