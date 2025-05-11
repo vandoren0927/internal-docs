@@ -1,10 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Authenticating...</title>
+    <meta charset="utf-8" />
+    <title>CMS Auth</title>
+    <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
   </head>
   <body>
+    <h1 style="text-align:center; margin-top:2rem;">🔐 正在驗證並載入 CMS...</h1>
+    <script>
+      fetch('config.json')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`無法載入 config.json：${response.status}`);
+          }
+          return response.json();
+        })
+        .then((config) => {
+          CMS.init({ config });
+        })
+        .catch((err) => {
+          console.error('CMS 初始化錯誤:', err);
+          document.body.innerHTML =
+            '<h1 style="color:red; text-align:center; margin-top:2rem;">CMS 載入失敗</h1>' +
+            `<pre style="color:red; text-align:center;">${err.message}</pre>`;
+        });
+    </script>
   </body>
 </html>
