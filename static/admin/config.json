@@ -4,7 +4,7 @@
   "repo": "vandoren0927/internal-docs",
   "branch": "main",
   "auth_type": "oauth",
-  "base_url": "https://internal-cms-oauth-provider.netlify.app",
+  "base_url": "https://wonderful-cascaron-8f491b.netlify.app",
   "auth_endpoint": "api/auth"
   },
 
