@@ -3,48 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <title>Content Manager</title>
-    <!-- 1) 先告诉 CMS：等我手动初始化 -->
-    <script>window.CMS_MANUAL_INIT = true;</script>
-    <!-- 2) 加载 Netlify Identity Widget -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <!-- 3) 再载入 Netlify-CMS 核心脚本 -->
+    <!-- 移除 CMS_MANUAL_INIT，改用自動初始化 -->
+    <!-- 移除 Netlify Identity Widget -->
+    <!-- 加载 Decap CMS 核心脚本 -->
     <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
   </head>
   <body>
-    <script>
-      // 如果启用了 Netlify Identity + Git Gateway，就会有 window.netlifyIdentity
-      if (window.netlifyIdentity) {
-        // 等 Widget 初始化完
-        window.netlifyIdentity.on("init", user => {
-          // 如果未经登录，则监听 login 事件
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              // 登录后重定向到 /admin/，让 CMS 可以读取配置并初始化
-              window.location.href = window.location.pathname;
-            });
-          }
-        });
-        window.netlifyIdentity.init();
-      }
-
-      // 手动读取 config.json 并初始化 CMS
-      fetch('config.json')
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Could not load config.json: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((config) => {
-          CMS.init({ config });
-        })
-        .catch((err) => {
-          console.error('Config load error:', err);
-          document.body.innerHTML =
-            '<h1 style="color:red; text-align:center; margin-top:2rem;">CMS 配置载入失败</h1>' +
-            `<pre style="color:red; text-align:center;">${err.message}</pre>`;
-        });
-    </script>
+    <!-- CMS 會自動從 /admin/config.json 讀取設定並初始化 -->
+    <h1 style="text-align:center; margin-top:2rem;">🚀 CMS 正在載入中...</h1>
   </body>
 </html>
-
