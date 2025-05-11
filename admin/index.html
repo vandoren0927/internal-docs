@@ -12,50 +12,39 @@
   </head>
   <body>
     <script>
-      // —— 手动初始化逻辑 —— //
-
+      // 如果启用了 Netlify Identity + Git Gateway，就会有 window.netlifyIdentity
       if (window.netlifyIdentity) {
-        // 先初始化 Identity Widget，监听 init 事件
-        window.netlifyIdentity.on('init', user => {
-          if (user) {
-            // 如果已经登录，直接加载并启动 CMS
-            loadAndInitCMS();
+        // 等 Widget 初始化完
+        window.netlifyIdentity.on("init", user => {
+          // 如果未经登录，则监听 login 事件
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              // 登录后重定向到 /admin/，让 CMS 可以读取配置并初始化
+              window.location.href = "/admin/";
+            });
           }
         });
-
-        // 监听登录成功事件
-        window.netlifyIdentity.on('login', () => {
-          // 关闭登录对话框
-          window.netlifyIdentity.close();
-          // 登录后加载并启动 CMS
-          loadAndInitCMS();
-        });
-
-        // 真正启动 Identity Widget
         window.netlifyIdentity.init();
       }
 
-      /**
-       * 加载 config.json 并初始化 Netlify CMS
-       */
-      function loadAndInitCMS() {
-        fetch('config.json')
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`Could not load config.json: ${response.status}`);
-            }
-            return response.json();
-          })
-          .then(config => {
-            CMS.init({ config });
-          })
-          .catch(err => {
-            console.error('Config load error:', err);
-            document.body.innerHTML =
-              '<h1 style="color:red; text-align:center; margin-top:2rem;">CMS 配置载入失败</h1>' +
-              `<pre style="color:red; text-align:center;">${err.message}</pre>`;
-          });
-      }
+      // 手动读取 config.json 并初始化 CMS
+      fetch('config.json')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Could not load config.json: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((config) => {
+          CMS.init({ config });
+        })
+        .catch((err) => {
+          console.error('Config load error:', err);
+          document.body.innerHTML =
+            '<h1 style="color:red; text-align:center; margin-top:2rem;">CMS 配置载入失败</h1>' +
+            `<pre style="color:red; text-align:center;">${err.message}</pre>`;
+        });
     </script>
   </body>
 </html>
+
