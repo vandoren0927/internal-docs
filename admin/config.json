@@ -16,30 +16,26 @@
       "label": "Documents",
       "folder": "docs",
       "create": true,
-      "slug": "{{category}}/{{slug}}",
+      "slug": "{{slug}}",
       "fields": [
-        {
-          "label": "Category",
-          "name": "category",
-          "widget": "select",
-          "options": [
-            "tutorial-basics",
-            "tutorial-extras",
-            "api",
-            "my-new-section"
-          ]
-        },
         {
           "label": "Title",
           "name": "title",
           "widget": "string"
         },
         {
-          "label": "Video",
+          "label": "Video (optional)",
           "name": "video",
           "widget": "file",
+          "hint": "Upload an MP4/WebM file (committed to /static/img/uploads)",
           "required": false,
-          "hint": "Upload an MP4/WebM file (will be committed to /static/img/uploads)"
+          "media_library": {
+            "allow_multiple": false
+          },
+          "pattern": [
+            "static/img/uploads/(.*)",
+            "/img/uploads/$1"
+          ]
         },
         {
           "label": "Body",
