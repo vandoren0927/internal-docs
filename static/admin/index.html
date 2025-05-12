@@ -5,25 +5,31 @@
     <title>Content Manager</title>
   </head>
   <body>
-    <!-- 載入 Netlify CMS -->
+    <!-- 引入 Netlify CMS 的核心程式 -->
     <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
     <script>
-      // 手動初始化，等 config 載入完再喚起
+      // 手動初始化 CMS
       window.CMS_MANUAL_INIT = true;
 
-      fetch("./config.json")
-        .then((response) => {
-          if (!response.ok) throw new Error("Failed to load config.json");
-          return response.json();
+      // 1) 先算出「當前 admin 資料夾」的完整路徑
+      const path = window.location.pathname.replace(/\/+$/, ''); // 去掉結尾的 /
+      const configUrl = `${path}/config.json`;
+
+      // 2) 抓取同目錄下的 config.json
+      fetch(configUrl)
+        .then((res) => {
+          if (!res.ok) throw new Error(`Failed to fetch ${configUrl} (status ${res.status})`);
+          return res.json();
         })
         .then((config) => {
-          // 傳入我們剛才抓到的 config
+          // 3) 抓到之後再啟動 CMS
           window.CMS.init({ config });
         })
         .catch((err) => {
+          // 如果失敗，就顯示錯誤訊息
           document.body.innerHTML =
             '<h1 style="color:red;">CMS config.json 載入失敗</h1>' +
-            `<pre>${err.message}</pre>`;
+            `<p>${err.message}</p>`;
           console.error(err);
         });
     </script>
