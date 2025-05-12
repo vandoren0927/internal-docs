@@ -14,31 +14,23 @@
     {
       "name": "docs",
       "label": "Documents",
-      "folder": "docs/{{category}}",
+      "folder": "docs",
       "create": true,
-      "slug": "{{slug}}",
+      "slug": "{{category}}/{{slug}}",
       "fields": [
         {
           "label": "Category",
           "name": "category",
           "widget": "select",
           "options": [
-            { "label": "Tutorials",       "value": "tutorials" },
-            { "label": "How-To Guides",   "value": "guides" },
-            { "label": "API Reference",   "value": "api" }
-          ],
-          "default": "tutorials"
+            "tutorial-basics",
+            "tutorial-extras",
+            "api",
+            "my-new-section"
+          ]
         },
-        {
-          "label": "Title",
-          "name": "title",
-          "widget": "string"
-        },
-        {
-          "label": "Body",
-          "name": "body",
-          "widget": "markdown"
-        }
+        { "label": "Title", "name": "title", "widget": "string" },
+        { "label": "Body", "name": "body", "widget": "markdown" }
       ]
     }
   ]
