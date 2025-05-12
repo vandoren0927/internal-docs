@@ -24,20 +24,6 @@
           "widget": "string"
         },
         {
-          "label": "Video (optional)",
-          "name": "video",
-          "widget": "file",
-          "hint": "Upload an MP4/WebM file (committed to /static/img/uploads)",
-          "required": false,
-          "media_library": {
-            "allow_multiple": false
-          },
-          "pattern": [
-            "static/img/uploads/(.*)",
-            "/img/uploads/$1"
-          ]
-        },
-        {
           "label": "Body",
           "name": "body",
           "widget": "markdown"
