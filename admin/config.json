@@ -29,8 +29,23 @@
             "my-new-section"
           ]
         },
-        { "label": "Title", "name": "title", "widget": "string" },
-        { "label": "Body", "name": "body", "widget": "markdown" }
+        {
+          "label": "Title",
+          "name": "title",
+          "widget": "string"
+        },
+        {
+          "label": "Video",
+          "name": "video",
+          "widget": "file",
+          "required": false,
+          "hint": "Upload an MP4/WebM file (will be committed to /static/img/uploads)"
+        },
+        {
+          "label": "Body",
+          "name": "body",
+          "widget": "markdown"
+        }
       ]
     }
   ]
