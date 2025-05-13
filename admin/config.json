@@ -12,33 +12,58 @@
   "public_folder": "img/uploads",
   "collections": [
     {
-      "name": "docs",
-      "label": "Documents",
+      "name": "root_docs",
+      "label": "Root Docs",
       "folder": "docs",
       "create": true,
-      "slug": "{{category}}/{{slug}}",
+      "slug": "{{slug}}",
       "fields": [
-        {
-          "label": "分类",
-          "name": "category",
-          "widget": "select",
-          "options": [
-            "tutorial-basics",
-            "tutorial-extras",
-            "api",
-            "my-new-section"
-          ]
-        },
-        {
-          "label": "标题",
-          "name": "title",
-          "widget": "string"
-        },
-        {
-          "label": "正文",
-          "name": "body",
-          "widget": "markdown"
-        }
+        { "label": "Title", "name": "title",  "widget": "string" },
+        { "label": "Body",  "name": "body",   "widget": "markdown" }
+      ]
+    },
+    {
+      "name": "tutorial_basics",
+      "label": "Tutorial – Basics",
+      "folder": "docs/tutorial-basics",
+      "create": true,
+      "slug": "{{slug}}",
+      "fields": [
+        { "label": "Title", "name": "title",  "widget": "string" },
+        { "label": "Body",  "name": "body",   "widget": "markdown" }
+      ]
+    },
+    {
+      "name": "tutorial_extras",
+      "label": "Tutorial – Extras",
+      "folder": "docs/tutorial-extras",
+      "create": true,
+      "slug": "{{slug}}",
+      "fields": [
+        { "label": "Title", "name": "title",  "widget": "string" },
+        { "label": "Body",  "name": "body",   "widget": "markdown" }
+      ]
+    },
+    {
+      "name": "api",
+      "label": "API",
+      "folder": "docs/api",
+      "create": true,
+      "slug": "{{slug}}",
+      "fields": [
+        { "label": "Title", "name": "title",  "widget": "string" },
+        { "label": "Body",  "name": "body",   "widget": "markdown" }
+      ]
+    },
+    {
+      "name": "my_new_section",
+      "label": "My New Section",
+      "folder": "docs/my-new-section",
+      "create": true,
+      "slug": "{{slug}}",
+      "fields": [
+        { "label": "Title", "name": "title",  "widget": "string" },
+        { "label": "Body",  "name": "body",   "widget": "markdown" }
       ]
     }
   ]
