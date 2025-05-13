@@ -19,12 +19,23 @@
       "slug": "{{slug}}",
       "fields": [
         {
-          "label": "Title",
+          "label": "分类",
+          "name": "category",
+          "widget": "select",
+          "options": [
+            "tutorial-basics",
+            "tutorial-extras",
+            "api",
+            "my-new-section"
+          ]
+        },
+        {
+          "label": "标题",
           "name": "title",
           "widget": "string"
         },
         {
-          "label": "Body",
+          "label": "正文",
           "name": "body",
           "widget": "markdown"
         }
