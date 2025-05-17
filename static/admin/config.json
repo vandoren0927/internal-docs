@@ -3,11 +3,10 @@
     "name": "github",
     "repo": "vandoren0927/internal-docs",
     "branch": "main",
-    "auth_type": "oauth",
-    "app_id": "Ov23liq4U9JnhYK16U2C",
-    "base_url": "https://api.netlify.com",
-    "auth_endpoint": "auth"
+    "app_id": "1287471",
+    "installation_id": "67151921"
   },
+  "site_url": "https://vandoren0927.github.io/internal-docs",
   "media_folder": "static/img/uploads",
   "public_folder": "img/uploads",
   "collections": [

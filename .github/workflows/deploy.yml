@@ -1,29 +1,46 @@
-name: Deploy to GitHub Pages
+# .github/workflows/deploy.yml
+
+name: Deploy Internal Docs to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: '16'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
       - name: Build Docusaurus site
+        env:
+          # 這裡的環境變數名稱仍可用 GITHUB_APP_ID 之類，差在它們的值來自
+          # secrets.APP_ID, secrets.INSTALLATION_ID, secrets.APP_PRIVATE_KEY
+          GITHUB_APP_ID:          ${{ secrets.APP_ID }}
+          GITHUB_INSTALLATION_ID: ${{ secrets.INSTALLATION_ID }}
+          GITHUB_APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
         run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          github_token:     ${{ secrets.GITHUB_TOKEN }}
+          publish_dir:      ./build
+          publish_branch:   gh-pages
+          keep_files:       false
+          user_name:        'github-actions[bot]'
+          user_email:       'github-actions[bot]@users.noreply.github.com'
