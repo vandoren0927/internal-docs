@@ -3,33 +3,29 @@
   <head>
     <meta charset="utf-8" />
     <title>Content Manager</title>
+    <!-- 1. 在加载 CMS 脚本前，先告诉它不要自动初始化 -->
+    <script>
+      window.CMS_MANUAL_INIT = true;
+    </script>
+    <!-- 2. 引入 Decap CMS（支持 GitHub App 后端的版本） -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </head>
   <body>
-    <!-- 引入 Netlify CMS 的核心程式 -->
-    <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
+    <h1>Loading CMS…</h1>
     <script>
-      // 手動初始化 CMS
-      window.CMS_MANUAL_INIT = true;
-
-      // 1) 先算出「當前 admin 資料夾」的完整路徑
-      const path = window.location.pathname.replace(/\/+$/, ''); // 去掉結尾的 /
-      const configUrl = `${path}/config.json`;
-
-      // 2) 抓取同目錄下的 config.json
+      // 3. 计算 config.json 的 URL（假设和 index.html 同目录）
+      const configUrl = `${window.location.origin}${window.location.pathname.replace(/\/+$/, '')}/config.json`;
+      // 4. 拉取你的 config.json，然后手动 init()
       fetch(configUrl)
-        .then((res) => {
-          if (!res.ok) throw new Error(`Failed to fetch ${configUrl} (status ${res.status})`);
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to load ${configUrl}: ${res.status}`);
           return res.json();
         })
-        .then((config) => {
-          // 3) 抓到之後再啟動 CMS
-          window.CMS.init({ config });
+        .then(cfg => {
+          CMS.init({ config: cfg });
         })
-        .catch((err) => {
-          // 如果失敗，就顯示錯誤訊息
-          document.body.innerHTML =
-            '<h1 style="color:red;">CMS config.json 載入失敗</h1>' +
-            `<p>${err.message}</p>`;
+        .catch(err => {
+          document.body.innerHTML = `<pre style="color:red;">${err.message}</pre>`;
           console.error(err);
         });
     </script>
