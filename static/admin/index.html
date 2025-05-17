@@ -1,33 +1,41 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Content Manager</title>
-    <!-- 1. 在加载 CMS 脚本前，先告诉它不要自动初始化 -->
-    <script>
-      window.CMS_MANUAL_INIT = true;
-    </script>
-    <!-- 2. 引入 Decap CMS（支持 GitHub App 后端的版本） -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  </head>
-  <body>
-    <h1>Loading CMS…</h1>
-    <script>
-      // 3. 计算 config.json 的 URL（假设和 index.html 同目录）
-      const configUrl = `${window.location.origin}${window.location.pathname.replace(/\/+$/, '')}/config.json`;
-      // 4. 拉取你的 config.json，然后手动 init()
-      fetch(configUrl)
-        .then(res => {
-          if (!res.ok) throw new Error(`Failed to load ${configUrl}: ${res.status}`);
-          return res.json();
-        })
-        .then(cfg => {
-          CMS.init({ config: cfg });
-        })
-        .catch(err => {
-          document.body.innerHTML = `<pre style="color:red;">${err.message}</pre>`;
-          console.error(err);
-        });
-    </script>
-  </body>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8" />
+  <title>Internal Docs CMS</title>
+  <!-- 1. 告訴 CMS 不要自動初始化 -->
+  <script>
+    window.CMS_MANUAL_INIT = true;
+  </script>
+  <!-- 2. 加載 Decap CMS v3 (支持 GitHub App 後端) -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+</head>
+<body>
+  <h1>Loading Content Manager…</h1>
+
+  <script>
+    async function bootCMS() {
+      // 3. 從同目錄拉取 config.json
+      const res = await fetch('./config.json');
+      if (!res.ok) {
+        throw new Error(`Cannot load config.json (status ${res.status})`);
+      }
+      const cfg = await res.json();
+
+      // 4. 手動啟動 CMS（使用 initCMS 而非 CMS.init）
+      window.initCMS({
+        config: cfg,
+        load_config_file: false  // 忽略任何內部 yaml 配置
+      });
+    }
+
+    bootCMS().catch(err => {
+      document.body.innerHTML = `
+        <h1 style="color:red;">CMS 啟動失敗</h1>
+        <pre style="color:red;">${err.message}</pre>
+      `;
+      console.error(err);
+    });
+  </script>
+</body>
 </html>
