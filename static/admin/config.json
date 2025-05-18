@@ -5,7 +5,6 @@
     "branch": "main",
     "app_id": "1287471",
     "installation_id": "67151921",
-    "base_url": "https://internal-docs-chi.vercel.app/",
     "auth_endpoint": "api/auth"
   },
   "site_url": "https://vandoren0927.github.io/internal-docs",
