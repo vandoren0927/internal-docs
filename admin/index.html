@@ -5,36 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="robots" content="noindex"/>
   <title>Internal Docs CMS</title>
-  <!-- 手動初始化 -->
+  <!-- 1. 手動初始化標誌，一定要在 decap-cms.js 之前 -->
   <script>window.CMS_MANUAL_INIT = true;</script>
-  <!-- 載入 Decap CMS v3 -->
+  <!-- 2. 載入 Decap CMS v3 -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </head>
 <body>
   <h1>Loading CMS…</h1>
   <script>
     (async () => {
-      try {
-        // 直接寫絕對路徑到 /admin/config.json
-        const configUrl = '/admin/config.json';
-        const res = await fetch(configUrl);
-        if (!res.ok) {
-          throw new Error(`載入 ${configUrl} 失敗 (status ${res.status})`);
-        }
-        const cfg = await res.json();
-        // 手動初始化，關閉讀取任何 yaml
-        window.initCMS({
-          config: cfg,
-          load_config_file: false
-        });
-      } catch (err) {
-        document.body.innerHTML = `
-          <h1 style="color:red;">CMS 啟動失敗</h1>
-          <pre style="color:red;">${err.message}</pre>
-        `;
-        console.error(err);
+      // 3. 絕對路徑讀取同目錄下的 config.json
+      const configUrl = '/admin/config.json';
+      const res = await fetch(configUrl);
+      if (!res.ok) {
+        throw new Error(`載入 ${configUrl} 失敗 (status ${res.status})`);
       }
-    })();
+      const cfg = await res.json();
+
+      // 4. 手動啟動 CMS，**關閉自動讀取任何 YAML**！
+      window.initCMS({
+        config: cfg,
+        load_config_file: false
+      });
+    })().catch(err => {
+      document.body.innerHTML = `
+        <h1 style="color:red;">CMS 啟動失敗</h1>
+        <pre style="color:red;">${err.message}</pre>
+      `;
+      console.error(err);
+    });
   </script>
 </body>
 </html>
