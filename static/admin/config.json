@@ -3,9 +3,9 @@
     "name": "github",
     "repo": "vandoren0927/internal-docs",
     "branch": "main",
-    "app_id": "1287471",
-    "installation_id": "67151921",
-    "authentication_endpoint": "/api/auth"
+    "base_url": "https://internal-docs-chi.vercel.app/api",
+    "auth_endpoint": "auth",
+    "site_domain": "internal-docs-chi.vercel.app"
   },
   "site_url": "https://internal-docs-chi.vercel.app",
   "media_folder": "static/img/uploads",
