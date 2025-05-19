@@ -1,9 +1,8 @@
 {
-  "redirects": [
+  "rewrites": [
     {
-      "source": "/admin",
-      "destination": "/admin/index.html",
-      "permanent": false
+      "source": "/admin/:path*",
+      "destination": "/internal-docs/admin/:path*"
     }
   ]
 }
