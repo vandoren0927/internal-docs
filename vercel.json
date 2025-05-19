@@ -1,12 +1,15 @@
 {
-  "routes": [
-    { "handle": "filesystem" },
-
+  "redirects": [
     {
-      "src": "/admin(?:/.*)?$",
-      "dest": "/admin/index.html"
-    },
-
-    { "handle": "rewrite", "src": "/(.*)", "dest": "/index.html" }
+      "source": "/admin",
+      "destination": "/admin/index.html",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/admin/:path*",
+      "destination": "/admin/index.html"
+    }
   ]
 }
