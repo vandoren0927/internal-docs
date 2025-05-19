@@ -11,7 +11,7 @@ const config: Config = {
 
   // GitHub Pages 網址
   url: 'https://vandoren0927.github.io',
-  baseUrl: '/internal-docs/',                 // 使用者站（根路徑）
+  baseUrl: '/',                 // 使用者站（根路徑）
 
   trailingSlash: true,
   deploymentBranch: 'gh-pages',
