@@ -5,11 +5,5 @@
       "destination": "/admin/index.html",
       "permanent": false
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/admin/:path*",
-      "destination": "/admin/index.html"
-    }
   ]
 }
