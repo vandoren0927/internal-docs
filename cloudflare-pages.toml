@@ -1,0 +1,10 @@
+# cloudflare-pages.toml
+
+project_name       = "internal-docs"           # 与你在 Dashboard 上看到的项目名一致
+account_id         = "1bd493f8c50f4616c88f7f537b310d4e"         # Dashboard → 右上角头像 → My Profile → Account ID
+compatibility_date = "2025-05-19"              # 随便填个最近的日期，比如今天
+
+[build]
+  command   = "npm run build"                  # 或者你的实际构建命令
+  upload    = "build"                          # 你输出静态页所在目录
+  functions = "functions"                      # 指定你放 auth.js 的目录
