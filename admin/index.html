@@ -1,27 +1,17 @@
 <!doctype html>
 <html lang="zh-TW">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex"/>
   <title>Internal Docs CMS</title>
-  <script>window.CMS_MANUAL_INIT=true;</script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </head>
 <body>
+  <!-- 載入 Decap CMS v3 -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script>
-    (async function() {
-      // 根据 URL 动态拼 ./config.json
-      const base = window.location.pathname.replace(/\/+$/, '');
-      const cfgUrl = `${base}/config.json`;
-      const res = await fetch(cfgUrl);
-      if (!res.ok) throw new Error(`Cannot load ${cfgUrl}: ${res.status}`);
-      const cfg = await res.json();
-      // 用 initCMS 而非 CMS.init
-      const { initCMS } = window;
-      initCMS({ config: cfg, load_config_file: false });
-    })().catch(e => {
-      document.body.innerHTML = `<pre style="color:red;">${e.message}</pre>`;
-      console.error(e);
-    });
+    // 自動初始化：CMS 會自動讀取同目錄下的 config.json
+    CMS.init();
   </script>
 </body>
 </html>
