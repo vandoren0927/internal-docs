@@ -3,12 +3,12 @@
     "name": "github",
     "repo": "vandoren0927/internal-docs",
     "branch": "main",
-    "base_url": "https://9564a72d.internal-docs-75x.pages.dev",
+    "base_url": "https://internal-docs-cms.netlify.app/.netlify/functions",
     "auth_endpoint": "api/auth",
-    "site_domain": "https://9564a72d.internal-docs-75x.pages.dev"
+    "site_domain": "internal-docs-cms.netlify.app"
   },
-  "site_url": "https://9564a72d.internal-docs-75x.pages.dev",
-  "display_url": "https://9564a72d.internal-docs-75x.pages.dev",
+  "site_url": "https://internal-docs-cms.netlify.app",
+  "display_url": "https://internal-docs-cms.netlify.app",
   "media_folder": "static/img/uploads",
   "public_folder": "img/uploads",
   "collections": [
