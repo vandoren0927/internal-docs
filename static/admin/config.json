@@ -1,10 +1,13 @@
 {
   "backend": {
     "name": "github",
+    "app_id": "1287471",
     "repo": "vandoren0927/internal-docs",
     "branch": "main",
     "base_url": "https://internal-docs-cms.netlify.app/.netlify/functions",
-    "auth_endpoint": "api/auth",
+    "auth_endpoint": "/.netlify/functions/api/auth",
+    "api_root": "/.netlify/functions/api",
+    "scope": ["repo"],
     "site_domain": "internal-docs-cms.netlify.app"
   },
   "site_url": "https://internal-docs-cms.netlify.app",

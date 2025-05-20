@@ -1,11 +1,15 @@
 # netlify.toml
 
 [build]
-  # 如果你的站点是用 npm run build 打包到 build/
+  # 如果你的站点打包命令是 npm run build，输出目录是 build/
   command   = "npm run build"
-  publish   = "build"                 # ← 这里从 public 改成 build
-  functions = "netlify/functions"     # 确保你的函数目录没填错
+  publish   = "build"                # ← 一定要改成你真正的 build 目录
+  functions = "netlify/functions"    # ← 指向你的函数所在目录
 
+[functions]
+  directory = "netlify/functions"    # ← 明确告诉 Netlify：这里放 Functions
+
+# 把 /admin/* 都重写到你的单页应用入口
 [[redirects]]
   from   = "/admin/*"
   to     = "/admin/index.html"
