@@ -3,7 +3,7 @@
     "name": "github",
     "repo": "vandoren0927/internal-docs",
     "branch": "main",
-    "base_url": "https://internal-docs-cms.netlify.app/netlify/functions",
+    "base_url": "https://internal-docs-cms.netlify.app/.netlify/functions",
     "auth_endpoint": "api/auth",
     "site_domain": "internal-docs-cms.netlify.app"
   },
