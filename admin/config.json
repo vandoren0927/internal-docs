@@ -7,8 +7,9 @@
     "auth_endpoint": "api/auth",
     "site_domain": "https://9564a72d.internal-docs-75x.pages.dev"
   },
-  "site_url": "https://internal-docs-chi.vercel.app",
-  "media_folder": "stathttps://9564a72d.internal-docs-75x.pages.devic/img/uploads",
+  "site_url": "https://9564a72d.internal-docs-75x.pages.dev",
+  "display_url": "https://9564a72d.internal-docs-75x.pages.dev",
+  "media_folder": "static/img/uploads",
   "public_folder": "img/uploads",
   "collections": [
     {
