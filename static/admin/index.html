@@ -6,40 +6,57 @@
   <meta name="robots" content="noindex" />
   <title>Internal Docs CMS</title>
 
-  <!-- 手动初始化 CMS -->
+  <!-- 1. 在 decap-cms.js 之前设定手动初始化标志 -->
   <script>window.CMS_MANUAL_INIT = true;</script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
-  <!-- Netlify Identity Widget -->
+  <!-- 2. 引入 Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@3.6.3/dist/decap-cms.js"></script>
+
+  <!-- 3. 引入 Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
+  <h1>Loading CMS…</h1>
+
   <script>
-    const identity = window.netlifyIdentity;
-    identity.init();
-
     (async () => {
-      try {
-        // 如果没登录，立刻弹出身份验证窗口
-        if (!identity.currentUser()) {
-          identity.open();
-          // 登录成功后刷新页面以触发 CMS.init
-          identity.on('login', () => location.reload());
-          return;
+      // —— Netlify Identity 初始化 —— //
+      // 先调用 identity.init()，把它挂到 window.CMS 的后台：
+      const identity = window.netlifyIdentity;
+      identity.init();
+
+      // 如果已经有登录过的用户，直接启动 CMS；否则弹出登录面板
+      if (identity.currentUser()) {
+        startCMS();
+      } else {
+        // 一旦用户登录（OAuth 完成），马上启动 CMS
+        identity.on('login', () => {
+          startCMS();
+        });
+        // 直接弹出登录框
+        identity.open();
+      }
+
+      // —— 启动 Decap CMS —— //
+      async function startCMS() {
+        try {
+          // 1) 拉取 config.json（放在 /admin/config.json）
+          const res = await fetch('/admin/config.json');
+          if (!res.ok) throw new Error(`Cannot load /admin/config.json: ${res.status}`);
+          const cfg = await res.json();
+
+          // 2) 正式调用 CMS.init
+          CMS.init({
+            config: cfg,
+            load_config_file: false,
+          });
+        } catch (err) {
+          document.body.innerHTML = `
+            <h1 style="color:red;">CMS 启动失败</h1>
+            <pre style="color:red;">${err.message}</pre>
+          `;
+          console.error(err);
         }
-
-        // 已登录：拉配置，初始化 CMS
-        const res = await fetch('/admin/config.json');
-        if (!res.ok) throw new Error(`Cannot load config.json: ${res.status}`);
-        const cfg = await res.json();
-
-        CMS.init({ config: cfg, load_config_file: false });
-      } catch (err) {
-        document.body.innerHTML = `
-          <h1 style="color:red">CMS 启动失败</h1>
-          <pre style="color:red">${err.message}</pre>
-        `;
-        console.error(err);
       }
     })();
   </script>
