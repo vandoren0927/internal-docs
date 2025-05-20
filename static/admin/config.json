@@ -4,8 +4,8 @@
     "app_id": "1287471",
     "repo": "vandoren0927/internal-docs",
     "branch": "main",
-    "auth_endpoint": "/.netlify/functions/api/auth",
-    "api_root": "/.netlify/functions/api",
+    "auth_endpoint": "/.netlify/functions/auth",
+    "api_root": "/.netlify/functions",
     "scope": ["repo"],
     "site_domain": "internal-docs-cms.netlify.app"
   },
