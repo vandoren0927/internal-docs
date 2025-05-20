@@ -1,35 +1,41 @@
-<!doctype html>
-<html lang="zh-TW">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="robots" content="noindex"/>
+  <meta charset="utf-8">
   <title>Internal Docs CMS</title>
-
-  <!-- 一定要在 decap-cms.js 之前设 -->
+  <!-- 如果你想手动初始化，放这里 -->
   <script>window.CMS_MANUAL_INIT = true;</script>
+  <!-- 引入 Decap/Netlify CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <!-- 引入 Netlify Identity Widget，用于自动登录 -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   <h1>Loading CMS…</h1>
   <script>
+    // 先初始化 Netlify Identity
+    const identity = window.netlifyIdentity;
+    identity.init();
+
+    // 如果未登录，点击登录后刷新页面
+    identity.on('login', () => location.reload());
+    identity.on('logout', () => location.reload());
+
     (async () => {
       try {
-        // 1. 绝对路径拿 config.json
         const res = await fetch('/admin/config.json');
-        if (!res.ok) throw new Error(`Cannot load /admin/config.json: ${res.status}`);
+        if (!res.ok) throw new Error(`Cannot load config: ${res.status}`);
         const cfg = await res.json();
 
-        // 2. 正确调用 CMS.init（注意不是 initCMS）
-        CMS.init({
-          config: cfg,
-          load_config_file: false
+        // 等 Identity 准备好，CMS 再启动
+        await new Promise(r => {
+          if (identity.currentUser()) return r();
+          identity.on('login', r);
         });
+
+        CMS.init({ config: cfg, load_config_file: false });
       } catch (err) {
-        document.body.innerHTML = `
-          <h1 style="color:red;">CMS 啟動失敗</h1>
-          <pre style="color:red;">${err.message}</pre>
-        `;
+        document.body.innerHTML = `<h1 style="color:red">CMS 启动失败</h1><pre style="color:red">${err.message}</pre>`;
         console.error(err);
       }
     })();
