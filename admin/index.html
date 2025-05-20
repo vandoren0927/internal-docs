@@ -12,56 +12,28 @@
 
   <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-  <style>
-    /* 登录按钮样式 */
-    #login-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 0.5em 1em;
-      background: #0072ff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-      z-index: 1000;
-    }
-  </style>
 </head>
 <body>
-  <h1>Loading CMS…</h1>
-  <button id="login-btn">Login to CMS</button>
-
   <script>
     const identity = window.netlifyIdentity;
     identity.init();
 
-    // 登录按钮点击：弹出 Netlify Identity 窗口
-    document.getElementById('login-btn').addEventListener('click', () => {
-      identity.open();
-    });
-
-    // 登录或登出后，刷新页面，重新触发 CMS.init
-    identity.on('login', () => location.reload());
-    identity.on('logout', () => location.reload());
-
     (async () => {
       try {
-        // 拉取配置
+        // 如果没登录，立刻弹出身份验证窗口
+        if (!identity.currentUser()) {
+          identity.open();
+          // 登录成功后刷新页面以触发 CMS.init
+          identity.on('login', () => location.reload());
+          return;
+        }
+
+        // 已登录：拉配置，初始化 CMS
         const res = await fetch('/admin/config.json');
         if (!res.ok) throw new Error(`Cannot load config.json: ${res.status}`);
         const cfg = await res.json();
 
-        // 如果已登录，直接初始化 CMS；否则等登录事件再初始化
-        if (identity.currentUser()) {
-          CMS.init({ config: cfg, load_config_file: false });
-        } else {
-          identity.on('login', () => {
-            CMS.init({ config: cfg, load_config_file: false });
-          });
-        }
+        CMS.init({ config: cfg, load_config_file: false });
       } catch (err) {
         document.body.innerHTML = `
           <h1 style="color:red">CMS 启动失败</h1>
