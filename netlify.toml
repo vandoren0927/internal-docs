@@ -1,11 +1,12 @@
 # netlify.toml
 
 [build]
-  publish   = "public"            # 你前端静态文件所在目录
-  functions = "netlify/functions" # Netlify 函数目录
+  # 如果你的站点是用 npm run build 打包到 build/
+  command   = "npm run build"
+  publish   = "build"                 # ← 这里从 public 改成 build
+  functions = "netlify/functions"     # 确保你的函数目录没填错
 
-# 所有 /admin/* 路由都指回 index.html，保证 SPA 能正确工作
 [[redirects]]
-  from     = "/admin/*"
-  to       = "/admin/index.html"
-  status   = 200
+  from   = "/admin/*"
+  to     = "/admin/index.html"
+  status = 200
