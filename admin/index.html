@@ -1,50 +1,67 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="robots" content="noindex" />
   <title>Internal Docs CMS</title>
-
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Netlify Identity CSS 必须在 head 里先引入 -->
+  <link
+    rel="stylesheet"
+    href="https://identity.netlify.com/v1/netlify-identity-widget.css"
+  />
+  <!-- 告诉 CMS 我们要自己手动 init -->
   <script>window.CMS_MANUAL_INIT = true;</script>
-  <script src="https://unpkg.com/decap-cms@3.6.3/dist/decap-cms.js"></script>
-  <link rel="stylesheet" href="https://identity.netlify.com/v1/netlify-identity-widget.css" />
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  
+  <script src="https://unpkg.com/netlify-cms-app@^2.15.0/dist/netlify-cms.js"></script>
 </head>
 <body>
   <h1>Loading CMS…</h1>
+
   <script>
-    (async () => {
-      const identity = window.netlifyIdentity;
-      identity.init({
-        locale: 'zh',    // 如果想要内建中文
-        // open: 'login'  // 可选：一初始化就弹出登录/注册
-      });
+    // 先初始化 Netlify Identity
+    const identity = window.netlifyIdentity;
+    if (!identity) {
+      document.body.innerHTML = '<h1 style="color:red">Failed to load Identity widget</h1>';
+      throw new Error('netlifyIdentity not found');
+    }
 
-      identity.on('init', user => {
-        if (user) {
-          startCMS();
-        } else {
-          identity.on('login', () => startCMS());
-          identity.open(); // 弹出登录/注册
-        }
-      });
-
-      async function startCMS() {
-        try {
-          const res = await fetch('/admin/config.json');
-          if (!res.ok) throw new Error(`Cannot load /admin/config.json: ${res.status}`);
-          const cfg = await res.json();
-          CMS.init({ config: cfg, load_config_file: false });
-        } catch (err) {
-          document.body.innerHTML = `
-            <h1 style="color:red;">CMS 启动失败</h1>
-            <pre style="color:red;">${err.message}</pre>`;
-          console.error(err);
-        }
+    identity.on('init', user => {
+      if (user) {
+        initCMS();
+      } else {
+        // 没有登录态，就自动弹出登录/注册对话框
+        identity.open();
       }
-    })();
+    });
+
+    // 用户刚刚登录成功后，再进 CMS
+    identity.on('login', () => {
+      initCMS();
+    });
+
+    // 真正调用 identity
+    identity.init();
+
+    // CMS 启动函数
+    async function initCMS() {
+      try {
+        const res = await fetch('/admin/config.json');
+        if (!res.ok) throw new Error('Cannot load config.json');
+        const cfg = await res.json();
+        window.CMS.init({
+          load_config_file: false,
+          config: {
+            ...cfg,
+            backend: {
+              name: 'git-gateway',
+              branch: 'main'
+            }
+          }
+        });
+      } catch (err) {
+        document.body.innerHTML = `<h1 style="color:red">CMS failed: ${err.message}</h1>`;
+        console.error(err);
+      }
+    }
   </script>
 </body>
 </html>
