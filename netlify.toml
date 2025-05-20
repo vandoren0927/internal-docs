@@ -1,0 +1,11 @@
+# netlify.toml
+
+[build]
+  publish   = "public"            # 你前端静态文件所在目录
+  functions = "netlify/functions" # Netlify 函数目录
+
+# 所有 /admin/* 路由都指回 index.html，保证 SPA 能正确工作
+[[redirects]]
+  from     = "/admin/*"
+  to       = "/admin/index.html"
+  status   = 200
