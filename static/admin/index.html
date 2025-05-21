@@ -1,67 +1,51 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-  <meta charset="utf-8" />
-  <title>Internal Docs CMS</title>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <!-- Netlify Identity CSS 必须在 head 里先引入 -->
+  <title>Internal Docs CMS</title>
+
+  <!-- 1. Netlify Identity Widget 的 CSS，一定要放在 <head> 并且在 JS 之前 -->
   <link
     rel="stylesheet"
     href="https://identity.netlify.com/v1/netlify-identity-widget.css"
   />
-  <!-- 告诉 CMS 我们要自己手动 init -->
-  <script>window.CMS_MANUAL_INIT = true;</script>
-  <script src="https://unpkg.com/netlify-cms-app@^2.15.0/dist/netlify-cms.js"></script>
+
+  <!-- 2. Netlify Identity Widget JS -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <!-- 3. Decap CMS 主程式 -->
+  <script src="https://unpkg.com/@decapcms/app@3.6.3/dist/decap-cms.js"></script>
 </head>
 <body>
   <h1>Loading CMS…</h1>
 
   <script>
-    // 先初始化 Netlify Identity
-    const identity = window.netlifyIdentity;
-    if (!identity) {
-      document.body.innerHTML = '<h1 style="color:red">Failed to load Identity widget</h1>';
-      throw new Error('netlifyIdentity not found');
-    }
+    // 先初始化 Netlify Identity（它会在用户未登录时自动在页面右下角挂一个“Log in / Sign up”按钮）
+    netlifyIdentity.init();
 
-    identity.on('init', user => {
-      if (user) {
-        initCMS();
-      } else {
-        // 没有登录态，就自动弹出登录/注册对话框
-        identity.open();
-      }
+    // 当用户登录后，re-load 一次，DecapCMS 就能自动拿到身份并进入后台
+    netlifyIdentity.on('login', () => {
+      window.location.reload();
     });
 
-    // 用户刚刚登录成功后，再进 CMS
-    identity.on('login', () => {
-      initCMS();
+    // 当用户登出时，也 reload，回到登录界面
+    netlifyIdentity.on('logout', () => {
+      window.location.reload();
     });
 
-    // 真正调用 identity
-    identity.init();
-
-    // CMS 启动函数
-    async function initCMS() {
-      try {
-        const res = await fetch('/admin/config.json');
-        if (!res.ok) throw new Error('Cannot load config.json');
-        const cfg = await res.json();
-        window.CMS.init({
-          load_config_file: false,
-          config: {
-            ...cfg,
-            backend: {
-              name: 'git-gateway',
-              branch: 'main'
-            }
-          }
-        });
-      } catch (err) {
-        document.body.innerHTML = `<h1 style="color:red">CMS failed: ${err.message}</h1>`;
-        console.error(err);
-      }
-    }
+    // 下面直接用 DecapCMS 自动初始化（不用 window.CMS_MANUAL_INIT，也不用手动调用 initCMS）
+    DecapCMS.init({
+      config: {
+        backend: {
+          name: 'git-gateway',
+          branch: 'main',
+        },
+        // 你原本 config.json 里其他的内容
+        ...window.CMS_CONFIG
+      },
+      load_config_file: false
+    });
   </script>
 </body>
 </html>
