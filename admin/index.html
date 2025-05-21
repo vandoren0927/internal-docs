@@ -1,67 +1,29 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Internal Docs CMS</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <!-- Netlify Identity CSS 必须在 head 里先引入 -->
-  <link
-    rel="stylesheet"
-    href="https://identity.netlify.com/v1/netlify-identity-widget.css"
-  />
-  <!-- 告诉 CMS 我们要自己手动 init -->
-  <script>window.CMS_MANUAL_INIT = true;</script>
-  <script src="https://unpkg.com/netlify-cms-app@^2.15.0/dist/netlify-cms.js"></script>
-</head>
-<body>
-  <h1>Loading CMS…</h1>
-
-  <script>
-    // 先初始化 Netlify Identity
-    const identity = window.netlifyIdentity;
-    if (!identity) {
-      document.body.innerHTML = '<h1 style="color:red">Failed to load Identity widget</h1>';
-      throw new Error('netlifyIdentity not found');
-    }
-
-    identity.on('init', user => {
-      if (user) {
-        initCMS();
-      } else {
-        // 没有登录态，就自动弹出登录/注册对话框
-        identity.open();
-      }
-    });
-
-    // 用户刚刚登录成功后，再进 CMS
-    identity.on('login', () => {
-      initCMS();
-    });
-
-    // 真正调用 identity
-    identity.init();
-
-    // CMS 启动函数
-    async function initCMS() {
-      try {
-        const res = await fetch('/admin/config.json');
-        if (!res.ok) throw new Error('Cannot load config.json');
-        const cfg = await res.json();
-        window.CMS.init({
-          load_config_file: false,
-          config: {
-            ...cfg,
-            backend: {
-              name: 'git-gateway',
-              branch: 'main'
-            }
-          }
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Content Manager</title>
+  </head>
+  <body>
+    <!-- Netlify CMS -->
+    <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      // 等 CMS 與 Identity script 都載入後
+      window.addEventListener('load', () => {
+        const auth = window.netlifyIdentity;
+        // 初始化 Identity
+        auth.init();
+        // 如果沒登入就打開登入 modal
+        if (!auth.currentUser()) {
+          auth.open('login');
+        }
+        // 登入後自動導向 /admin
+        auth.on('login', () => {
+          document.location.href = '/admin/';
         });
-      } catch (err) {
-        document.body.innerHTML = `<h1 style="color:red">CMS failed: ${err.message}</h1>`;
-        console.error(err);
-      }
-    }
-  </script>
-</body>
+      });
+    </script>
+  </body>
 </html>
