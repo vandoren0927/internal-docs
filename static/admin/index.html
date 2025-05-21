@@ -1,51 +1,61 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Internal Docs CMS</title>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Content Manager</title>
+    <!-- 1) 先告诉 CMS：等我手动初始化 -->
+    <script>window.CMS_MANUAL_INIT = true;</script>
+    <!-- 2) 加载 Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- 3) 再载入 Netlify-CMS 核心脚本 -->
+    <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
+  </head>
+  <body>
+    <script>
+      // —— 手动初始化逻辑 —— //
 
-  <!-- 1. Netlify Identity Widget 的 CSS，一定要放在 <head> 并且在 JS 之前 -->
-  <link
-    rel="stylesheet"
-    href="https://identity.netlify.com/v1/netlify-identity-widget.css"
-  />
+      if (window.netlifyIdentity) {
+        // 先初始化 Identity Widget，监听 init 事件
+        window.netlifyIdentity.on('init', user => {
+          if (user) {
+            // 如果已经登录，直接加载并启动 CMS
+            loadAndInitCMS();
+          }
+        });
 
-  <!-- 2. Netlify Identity Widget JS -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+        // 监听登录成功事件
+        window.netlifyIdentity.on('login', () => {
+          // 关闭登录对话框
+          window.netlifyIdentity.close();
+          // 登录后加载并启动 CMS
+          loadAndInitCMS();
+        });
 
-  <!-- 3. Decap CMS 主程式 -->
-  <script src="https://unpkg.com/@decapcms/app@3.6.3/dist/decap-cms.js"></script>
-</head>
-<body>
-  <h1>Loading CMS…</h1>
+        // 真正启动 Identity Widget
+        window.netlifyIdentity.init();
+      }
 
-  <script>
-    // 先初始化 Netlify Identity（它会在用户未登录时自动在页面右下角挂一个“Log in / Sign up”按钮）
-    netlifyIdentity.init();
-
-    // 当用户登录后，re-load 一次，DecapCMS 就能自动拿到身份并进入后台
-    netlifyIdentity.on('login', () => {
-      window.location.reload();
-    });
-
-    // 当用户登出时，也 reload，回到登录界面
-    netlifyIdentity.on('logout', () => {
-      window.location.reload();
-    });
-
-    // 下面直接用 DecapCMS 自动初始化（不用 window.CMS_MANUAL_INIT，也不用手动调用 initCMS）
-    DecapCMS.init({
-      config: {
-        backend: {
-          name: 'git-gateway',
-          branch: 'main',
-        },
-        // 你原本 config.json 里其他的内容
-        ...window.CMS_CONFIG
-      },
-      load_config_file: false
-    });
-  </script>
-</body>
+      /**
+       * 加载 config.json 并初始化 Netlify CMS
+       */
+      function loadAndInitCMS() {
+        fetch('config.json')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Could not load config.json: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(config => {
+            CMS.init({ config });
+          })
+          .catch(err => {
+            console.error('Config load error:', err);
+            document.body.innerHTML =
+              '<h1 style="color:red; text-align:center; margin-top:2rem;">CMS 配置载入失败</h1>' +
+              `<pre style="color:red; text-align:center;">${err.message}</pre>`;
+          });
+      }
+    </script>
+  </body>
 </html>
