@@ -92,11 +92,38 @@
       "label": "My New Section",
       "folder": "docs/my-new-section",
       "create": true,
-      "slug": "{{slug}}",
+      "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
-        { "label": "標題", "name": "title", "widget": "string" },
-        { "label": "Slug", "name": "slug", "widget": "string", "required": true },
-        { "label": "正文", "name": "body", "widget": "markdown" }
+        {
+          "label": "子分類 (子資料夾)",
+          "name": "subfolder",
+          "widget": "string",
+          "hint": "請輸入要在 My New Section 資料夾下建立的子資料夾名稱"
+        },
+        {
+          "label": "Slug (檔名)",
+          "name": "slug",
+          "widget": "string",
+          "required": true,
+          "hint": "決定儲存檔案的檔名，例如 my-article"
+        },
+        {
+          "label": "備註",
+          "name": "note",
+          "widget": "string",
+          "required": false,
+          "hint": "可輸入這篇文件的額外說明或備註"
+        },
+        {
+          "label": "標題",
+          "name": "title",
+          "widget": "string"
+        },
+        {
+          "label": "正文",
+          "name": "body",
+          "widget": "markdown"
+        }
       ]
     }
   ]
