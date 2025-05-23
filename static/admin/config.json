@@ -4,51 +4,24 @@
     "repo": "vandoren0927/internal-docs",
     "branch": "main"
   },
-
   "media_folder": "static/img/uploads",
   "public_folder": "/img/uploads",
   "site_url": "https://internal-docs-cms.netlify.app",
   "auth_endpoint": "/.netlify/identity",
   "publish_mode": "editorial_workflow",
-
   "collections": [
     {
       "name": "root_docs",
       "label": "Root Docs",
       "folder": "docs",
       "create": true,
-      "slug": "{{fields.category}}/{{slug}}",
+      "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
-        {
-          "label": "分類 (子資料夾)",
-          "name": "category",
-          "widget": "string",
-          "hint": "請輸入要放入的子資料夾名稱"
-        },
-        {
-          "label": "Slug (檔名)",
-          "name": "slug",
-          "widget": "string",
-          "required": true,
-          "hint": "決定儲存檔案時的檔名，範例：my-article"
-        },
-        {
-          "label": "備註",
-          "name": "note",
-          "widget": "string",
-          "required": false,
-          "hint": "可輸入這篇文件的額外說明或備註"
-        },
-        {
-          "label": "標題",
-          "name": "title",
-          "widget": "string"
-        },
-        {
-          "label": "正文",
-          "name": "body",
-          "widget": "markdown"
-        }
+        { "label": "子分類 (子資料夾)", "name": "subfolder", "widget": "string", "hint": "請輸入要放入的子資料夾名稱" },
+        { "label": "Slug (檔名)", "name": "slug", "widget": "string", "required": true, "hint": "決定儲存檔案的檔名，例如 my-article" },
+        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false, "hint": "可輸入這篇文件的額外說明或備註" },
+        { "label": "標題", "name": "title", "widget": "string" },
+        { "label": "正文", "name": "body", "widget": "markdown" }
       ]
     },
     {
@@ -56,10 +29,12 @@
       "label": "Tutorial – Basics",
       "folder": "docs/tutorial-basics",
       "create": true,
-      "slug": "{{slug}}",
+      "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
+        { "label": "子分類 (子資料夾)", "name": "subfolder", "widget": "string", "hint": "請輸入要放入 Tutorial – Basics 底下的子資料夾名稱" },
+        { "label": "Slug (檔名)", "name": "slug", "widget": "string", "required": true, "hint": "決定儲存檔案的檔名，例如 my-article" },
+        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false, "hint": "可輸入這篇文件的額外說明或備註" },
         { "label": "標題", "name": "title", "widget": "string" },
-        { "label": "Slug", "name": "slug", "widget": "string", "required": true },
         { "label": "正文", "name": "body", "widget": "markdown" }
       ]
     },
@@ -68,10 +43,12 @@
       "label": "Tutorial – Extras",
       "folder": "docs/tutorial-extras",
       "create": true,
-      "slug": "{{slug}}",
+      "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
+        { "label": "子分類 (子資料夾)", "name": "subfolder", "widget": "string", "hint": "請輸入要放入 Tutorial – Extras 底下的子資料夾名稱" },
+        { "label": "Slug (檔名)", "name": "slug", "widget": "string", "required": true, "hint": "決定儲存檔案的檔名，例如 my-article" },
+        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false, "hint": "可輸入這篇文件的額外說明或備註" },
         { "label": "標題", "name": "title", "widget": "string" },
-        { "label": "Slug", "name": "slug", "widget": "string", "required": true },
         { "label": "正文", "name": "body", "widget": "markdown" }
       ]
     },
@@ -80,10 +57,12 @@
       "label": "API Documentation",
       "folder": "docs/api",
       "create": true,
-      "slug": "{{slug}}",
+      "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
+        { "label": "子分類 (子資料夾)", "name": "subfolder", "widget": "string", "hint": "請輸入要放入 API Documentation 底下的子資料夾名稱" },
+        { "label": "Slug (檔名)", "name": "slug", "widget": "string", "required": true, "hint": "決定儲存檔案的檔名，例如 my-article" },
+        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false, "hint": "可輸入這篇文件的額外說明或備註" },
         { "label": "標題", "name": "title", "widget": "string" },
-        { "label": "Slug", "name": "slug", "widget": "string", "required": true },
         { "label": "正文", "name": "body", "widget": "markdown" }
       ]
     },
@@ -94,36 +73,11 @@
       "create": true,
       "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
-        {
-          "label": "子分類 (子資料夾)",
-          "name": "subfolder",
-          "widget": "string",
-          "hint": "請輸入要在 My New Section 資料夾下建立的子資料夾名稱"
-        },
-        {
-          "label": "Slug (檔名)",
-          "name": "slug",
-          "widget": "string",
-          "required": true,
-          "hint": "決定儲存檔案的檔名，例如 my-article"
-        },
-        {
-          "label": "備註",
-          "name": "note",
-          "widget": "string",
-          "required": false,
-          "hint": "可輸入這篇文件的額外說明或備註"
-        },
-        {
-          "label": "標題",
-          "name": "title",
-          "widget": "string"
-        },
-        {
-          "label": "正文",
-          "name": "body",
-          "widget": "markdown"
-        }
+        { "label": "子分類 (子資料夾)", "name": "subfolder", "widget": "string", "hint": "請輸入要放入 My New Section 底下的子資料夾名稱" },
+        { "label": "Slug (檔名)", "name": "slug", "widget": "string", "required": true, "hint": "決定儲存檔案的檔名，例如 my-article" },
+        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false, "hint": "可輸入這篇文件的額外說明或備註" },
+        { "label": "標題", "name": "title", "widget": "string" },
+        { "label": "正文", "name": "body", "widget": "markdown" }
       ]
     }
   ]
