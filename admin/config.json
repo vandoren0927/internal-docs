@@ -15,9 +15,7 @@
       "label": "Root Docs",
       "folder": "docs",
       "create": true,
-      // 動態 Path：先輸入 subfolder 再輸入 slug，檔案就會存到 docs/<subfolder>/<slug>.md
       "path": "{{fields.subfolder}}/{{slug}}.md",
-      // Nested 讓 CMS 顯示二層結構：第一層是 subfolder，第二層才是檔案
       "nested": { "depth": 2, "summary": "{{fields.slug}}" },
       "fields": [
         {
