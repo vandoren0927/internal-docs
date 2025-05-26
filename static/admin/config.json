@@ -15,7 +15,9 @@
       "label": "Root Docs",
       "folder": "docs",
       "create": true,
+      // 動態 Path：先輸入 subfolder 再輸入 slug，檔案就會存到 docs/<subfolder>/<slug>.md
       "path": "{{fields.subfolder}}/{{slug}}.md",
+      // Nested 讓 CMS 顯示二層結構：第一層是 subfolder，第二層才是檔案
       "nested": { "depth": 2, "summary": "{{fields.slug}}" },
       "fields": [
         {
@@ -35,8 +37,7 @@
           "label": "備註 (Optional)",
           "name": "note",
           "widget": "string",
-          "required": false,
-          "hint": "可輸入這篇文件的額外說明或備註"
+          "required": false
         },
         {
           "label": "標題",
@@ -86,23 +87,9 @@
           "required": true,
           "hint": "決定檔名，例如 my-article"
         },
-        {
-          "label": "備註 (Optional)",
-          "name": "note",
-          "widget": "string",
-          "required": false,
-          "hint": "可輸入這篇文件的額外說明或備註"
-        },
-        {
-          "label": "標題",
-          "name": "title",
-          "widget": "string"
-        },
-        {
-          "label": "正文",
-          "name": "body",
-          "widget": "markdown"
-        }
+        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false },
+        { "label": "標題", "name": "title", "widget": "string" },
+        { "label": "正文", "name": "body",  "widget": "markdown" }
       ]
     },
     {
@@ -126,23 +113,9 @@
           "required": true,
           "hint": "決定檔名，例如 my-article"
         },
-        {
-          "label": "備註 (Optional)",
-          "name": "note",
-          "widget": "string",
-          "required": false,
-          "hint": "可輸入這篇文件的額外說明或備註"
-        },
-        {
-          "label": "標題",
-          "name": "title",
-          "widget": "string"
-        },
-        {
-          "label": "正文",
-          "name": "body",
-          "widget": "markdown"
-        }
+        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false },
+        { "label": "標題", "name": "title", "widget": "string" },
+        { "label": "正文", "name": "body",  "widget": "markdown" }
       ]
     },
     {
@@ -166,23 +139,9 @@
           "required": true,
           "hint": "決定檔名，例如 my-article"
         },
-        {
-          "label": "備註 (Optional)",
-          "name": "note",
-          "widget": "string",
-          "required": false,
-          "hint": "可輸入這篇文件的額外說明或備註"
-        },
-        {
-          "label": "標題",
-          "name": "title",
-          "widget": "string"
-        },
-        {
-          "label": "正文",
-          "name": "body",
-          "widget": "markdown"
-        }
+        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false },
+        { "label": "標題", "name": "title", "widget": "string" },
+        { "label": "正文", "name": "body",  "widget": "markdown" }
       ]
     },
     {
@@ -206,23 +165,9 @@
           "required": true,
           "hint": "決定檔名，例如 my-article"
         },
-        {
-          "label": "備註 (Optional)",
-          "name": "note",
-          "widget": "string",
-          "required": false,
-          "hint": "可輸入這篇文件的額外說明或備註"
-        },
-        {
-          "label": "標題",
-          "name": "title",
-          "widget": "string"
-        },
-        {
-          "label": "正文",
-          "name": "body",
-          "widget": "markdown"
-        }
+        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false },
+        { "label": "標題", "name": "title", "widget": "string" },
+        { "label": "正文", "name": "body",  "widget": "markdown" }
       ]
     }
   ]
