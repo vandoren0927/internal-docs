@@ -15,17 +15,14 @@
       "label": "Root Docs",
       "folder": "docs",
       "create": true,
-      "slug": "{{subfolder}}/{{slug}}",
-      "nested": {
-        "depth": 2,
-        "summary": "{{title}}"
-      },
+      "path": "{{fields.subfolder}}/{{slug}}.md",
+      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
           "name": "subfolder",
           "widget": "string",
-          "hint": "要放到哪個子資料夾（像 001、002）"
+          "hint": "要放到哪個子資料夾（如 001、002）"
         },
         {
           "label": "Slug (檔名)",
@@ -72,17 +69,14 @@
       "label": "Tutorial – Basics",
       "folder": "docs/tutorial-basics",
       "create": true,
-      "slug": "{{subfolder}}/{{slug}}",
-      "nested": {
-        "depth": 2,
-        "summary": "{{title}}"
-      },
+      "path": "{{fields.subfolder}}/{{slug}}.md",
+      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
           "name": "subfolder",
           "widget": "string",
-          "hint": "請輸入要放入 Tutorial – Basics 底下的子資料夾名稱"
+          "hint": "Tutorial – Basics 底下子資料夾名稱"
         },
         {
           "label": "Slug (檔名)",
@@ -91,9 +85,22 @@
           "required": true,
           "hint": "決定檔名，例如 my-article"
         },
-        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false },
-        { "label": "標題", "name": "title", "widget": "string" },
-        { "label": "正文", "name": "body",  "widget": "markdown" }
+        {
+          "label": "備註 (Optional)",
+          "name": "note",
+          "widget": "string",
+          "required": false
+        },
+        {
+          "label": "標題",
+          "name": "title",
+          "widget": "string"
+        },
+        {
+          "label": "正文",
+          "name": "body",
+          "widget": "markdown"
+        }
       ]
     },
     {
@@ -101,17 +108,14 @@
       "label": "Tutorial – Extras",
       "folder": "docs/tutorial-extras",
       "create": true,
-      "slug": "{{subfolder}}/{{slug}}",
-      "nested": {
-        "depth": 2,
-        "summary": "{{title}}"
-      },
+      "path": "{{fields.subfolder}}/{{slug}}.md",
+      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
           "name": "subfolder",
           "widget": "string",
-          "hint": "請輸入要放入 Tutorial – Extras 底下的子資料夾名稱"
+          "hint": "Tutorial – Extras 底下子資料夾名稱"
         },
         {
           "label": "Slug (檔名)",
@@ -120,9 +124,22 @@
           "required": true,
           "hint": "決定檔名，例如 my-article"
         },
-        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false },
-        { "label": "標題", "name": "title", "widget": "string" },
-        { "label": "正文", "name": "body",  "widget": "markdown" }
+        {
+          "label": "備註 (Optional)",
+          "name": "note",
+          "widget": "string",
+          "required": false
+        },
+        {
+          "label": "標題",
+          "name": "title",
+          "widget": "string"
+        },
+        {
+          "label": "正文",
+          "name": "body",
+          "widget": "markdown"
+        }
       ]
     },
     {
@@ -130,17 +147,14 @@
       "label": "api",
       "folder": "docs/api",
       "create": true,
-      "slug": "{{subfolder}}/{{slug}}",
-      "nested": {
-        "depth": 2,
-        "summary": "{{title}}"
-      },
+      "path": "{{fields.subfolder}}/{{slug}}.md",
+      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
           "name": "subfolder",
           "widget": "string",
-          "hint": "請輸入要放入 api 底下的子資料夾名稱"
+          "hint": "api 底下子資料夾名稱"
         },
         {
           "label": "Slug (檔名)",
@@ -149,9 +163,22 @@
           "required": true,
           "hint": "決定檔名，例如 my-article"
         },
-        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false },
-        { "label": "標題", "name": "title", "widget": "string" },
-        { "label": "正文", "name": "body",  "widget": "markdown" }
+        {
+          "label": "備註 (Optional)",
+          "name": "note",
+          "widget": "string",
+          "required": false
+        },
+        {
+          "label": "標題",
+          "name": "title",
+          "widget": "string"
+        },
+        {
+          "label": "正文",
+          "name": "body",
+          "widget": "markdown"
+        }
       ]
     },
     {
@@ -159,17 +186,14 @@
       "label": "My New Section",
       "folder": "docs/my-new-section",
       "create": true,
-      "slug": "{{subfolder}}/{{slug}}",
-      "nested": {
-        "depth": 3,
-        "summary": "{{title}}"
-      },
+      "path": "{{fields.subfolder}}/{{slug}}.md",
+      "nested": { "depth": 3, "summary": "{{fields.slug}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
           "name": "subfolder",
           "widget": "string",
-          "hint": "請輸入要放入 My New Section 底下的子資料夾名稱"
+          "hint": "My New Section 底下子資料夾名稱"
         },
         {
           "label": "Slug (檔名)",
@@ -178,9 +202,22 @@
           "required": true,
           "hint": "決定檔名，例如 my-article"
         },
-        { "label": "備註 (Optional)", "name": "note", "widget": "string", "required": false },
-        { "label": "標題", "name": "title", "widget": "string" },
-        { "label": "正文", "name": "body",  "widget": "markdown" }
+        {
+          "label": "備註 (Optional)",
+          "name": "note",
+          "widget": "string",
+          "required": false
+        },
+        {
+          "label": "標題",
+          "name": "title",
+          "widget": "string"
+        },
+        {
+          "label": "正文",
+          "name": "body",
+          "widget": "markdown"
+        }
       ]
     }
   ]
