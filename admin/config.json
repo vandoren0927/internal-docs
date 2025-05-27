@@ -15,11 +15,10 @@
       "label": "Root Docs",
       "folder": "docs",
       "create": true,
-      "path": "{{fields.subfolder}}/{{slug}}.md",
+      "slug": "{{subfolder}}/{{slug}}",
       "nested": {
         "depth": 2,
-        "summary": "{{fields.title}}",
-        "group_by": "fields.subfolder"
+        "summary": "{{title}}"
       },
       "fields": [
         {
@@ -73,8 +72,11 @@
       "label": "Tutorial – Basics",
       "folder": "docs/tutorial-basics",
       "create": true,
-      "path": "{{fields.subfolder}}/{{slug}}.md",
-      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
+      "slug": "{{subfolder}}/{{slug}}",
+      "nested": {
+        "depth": 2,
+        "summary": "{{title}}"
+      },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
@@ -99,8 +101,11 @@
       "label": "Tutorial – Extras",
       "folder": "docs/tutorial-extras",
       "create": true,
-      "path": "{{fields.subfolder}}/{{slug}}.md",
-      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
+      "slug": "{{subfolder}}/{{slug}}",
+      "nested": {
+        "depth": 2,
+        "summary": "{{title}}"
+      },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
@@ -125,8 +130,11 @@
       "label": "api",
       "folder": "docs/api",
       "create": true,
-      "path": "{{fields.subfolder}}/{{slug}}.md",
-      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
+      "slug": "{{subfolder}}/{{slug}}",
+      "nested": {
+        "depth": 2,
+        "summary": "{{title}}"
+      },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
@@ -151,8 +159,11 @@
       "label": "My New Section",
       "folder": "docs/my-new-section",
       "create": true,
-      "path": "{{fields.subfolder}}/{{slug}}.md",
-      "nested": { "depth": 3, "summary": "{{fields.slug}}" },
+      "slug": "{{subfolder}}/{{slug}}",
+      "nested": {
+        "depth": 3,
+        "summary": "{{title}}"
+      },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
