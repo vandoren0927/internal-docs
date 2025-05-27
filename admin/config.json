@@ -16,7 +16,7 @@
       "folder": "docs",
       "create": true,
       "path": "{{fields.subfolder}}/{{slug}}.md",
-      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
+      "nested": { "depth": 2, "summary": "{{fields.subfolder}} / {{fields.title}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
