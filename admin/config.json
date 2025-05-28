@@ -16,20 +16,19 @@
       "folder": "docs",
       "create": true,
       "path": "{{fields.subfolder}}/{{slug}}.md",
-      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
           "name": "subfolder",
           "widget": "string",
-          "hint": "如 001、002"
+          "hint": "輸入要放入的子資料夾名稱（例如 001、002）"
         },
         {
           "label": "Slug (檔名)",
           "name": "slug",
           "widget": "string",
           "required": true,
-          "hint": "決定檔名，例如 123"
+          "hint": "決定檔名，不含副檔名，例如 123"
         },
         {
           "label": "備註 (Optional)",
@@ -70,7 +69,6 @@
       "folder": "docs/tutorial-basics",
       "create": true,
       "path": "{{fields.subfolder}}/{{slug}}.md",
-      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
@@ -108,7 +106,6 @@
       "folder": "docs/tutorial-extras",
       "create": true,
       "path": "{{fields.subfolder}}/{{slug}}.md",
-      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
@@ -142,17 +139,16 @@
     },
     {
       "name": "api",
-      "label": "api",
+      "label": "API Documentation",
       "folder": "docs/api",
       "create": true,
       "path": "{{fields.subfolder}}/{{slug}}.md",
-      "nested": { "depth": 2, "summary": "{{fields.slug}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
           "name": "subfolder",
           "widget": "string",
-          "hint": "api 底下子資料夾名稱"
+          "hint": "API 底下子資料夾名稱"
         },
         {
           "label": "Slug (檔名)",
@@ -184,7 +180,6 @@
       "folder": "docs/my-new-section",
       "create": true,
       "path": "{{fields.subfolder}}/{{slug}}.md",
-      "nested": { "depth": 3, "summary": "{{fields.slug}}" },
       "fields": [
         {
           "label": "子分類 (子資料夾)",
