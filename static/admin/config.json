@@ -17,6 +17,7 @@
       "label": "Root Docs",
       "folder": "docs",
       "create": true,
+      "nested": { "depth": 2, "summary": "{{fields.title}}" },
       "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
         {
@@ -56,6 +57,7 @@
       "label": "Tutorial – Basics",
       "folder": "docs/tutorial-basics",
       "create": true,
+      "nested": { "depth": 1, "summary": "{{fields.title}}" },
       "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
         {
@@ -95,6 +97,7 @@
       "label": "Tutorial – Extras",
       "folder": "docs/tutorial-extras",
       "create": true,
+      "nested": { "depth": 1, "summary": "{{fields.title}}" },
       "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
         {
@@ -134,6 +137,7 @@
       "label": "API Documentation",
       "folder": "docs/api",
       "create": true,
+      "nested": { "depth": 1, "summary": "{{fields.title}}" },
       "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
         {
@@ -173,6 +177,7 @@
       "label": "My New Section",
       "folder": "docs/my-new-section",
       "create": true,
+      "nested": { "depth": 1, "summary": "{{fields.title}}" },
       "slug": "{{fields.subfolder}}/{{slug}}",
       "fields": [
         {
