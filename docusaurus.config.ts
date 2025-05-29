@@ -66,7 +66,7 @@ const config: Config = {
       links: [
         {
           title: 'Docs',
-          items: [{ label: 'Tutorial', to: '/kb/intro' }],
+          items: [{ label: 'Overview', to: '/kb/' }],
         },
         {
           title: 'Community',
