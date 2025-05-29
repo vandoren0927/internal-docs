@@ -10,3 +10,5 @@ date: 2025-05-30
 <video controls src="/internal-docs/img/testing01.mp4" width="640">
   您的瀏覽器不支援影片標籤。
 </video>
+
+![這是截圖示例](/internal-docs/img/uploads/屏幕截图-2024-12-24-001207.png)
