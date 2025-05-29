@@ -1,17 +1,22 @@
 // netlify/functions/upload-md.js
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   try {
-    // 动态载入新版 @octokit/rest ES Module
+    // 動態載入新版 Octokit ESM 模組
     const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
     const { fileName, contentBase64, targetPath = '' } = JSON.parse(event.body);
-    const OWNER   = 'vandoren0927';
-    const REPO    = 'internal-docs';
-    const BRANCH  = 'main';
-    const filePath = ['docs', targetPath, fileName].filter(Boolean).join('/');
+    const OWNER  = 'vandoren0927';
+    const REPO   = 'internal-docs';
+    const BRANCH = 'main';
 
-    // 尝试拿 sha（若文件已存在）
+    // 根據副檔名決定存放位置
+    const ext = fileName.split('.').pop().toLowerCase();
+    const baseFolder = ext === 'md' ? 'docs' : 'static/img';
+    const filePath = [baseFolder, targetPath, fileName]
+      .filter(Boolean).join('/');
+
+    // 嘗試讀取現有 sha（若檔案已存在）
     let sha;
     try {
       const info = await octokit.repos.getContent({
@@ -25,7 +30,7 @@ exports.handler = async (event, context) => {
       if (err.status !== 404) throw err;
     }
 
-    // 提交或更新
+    // 建立或更新檔案
     await octokit.repos.createOrUpdateFileContents({
       owner: OWNER,
       repo: REPO,

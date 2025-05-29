@@ -3,93 +3,62 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Markdown 上傳工具</title>
+  <title>多文件上傳工具</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Noto Sans TC', sans-serif;
       background-color: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 1rem;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; padding: 1rem;
     }
     .container {
-      background: #ffffff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      width: 100%;
+      background: #fff; padding: 2rem;
+      border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 400px; width: 100%;
     }
     h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      color: #333;
+      text-align: center; font-size: 1.5rem; font-weight: 700;
+      margin-bottom: 1.5rem; color: #333;
     }
-    form {
-      display: flex;
-      flex-direction: column;
-    }
+    form { display: flex; flex-direction: column; }
     label {
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-      color: #555;
-      font-size: 0.95rem;
+      font-weight: 500; margin-bottom: 0.5rem;
+      color: #555; font-size: 0.95rem;
     }
-    input[type="file"],
-    input[type="text"] {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-      margin-top: 0.25rem;
-      width: 100%;
+    input[type="file"], input[type="text"] {
+      padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;
+      font-size: 1rem; margin-top: 0.25rem; width: 100%;
     }
     button {
-      margin-top: 1.25rem;
-      padding: 0.75rem;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
+      margin-top: 1.25rem; padding: 0.75rem;
+      background-color: #007bff; color: #fff; border: none;
+      border-radius: 4px; font-size: 1rem; font-weight: 500;
+      cursor: pointer; transition: background-color 0.2s ease;
     }
-    button:hover {
-      background-color: #0056b3;
-    }
+    button:hover { background-color: #0056b3; }
     pre {
-      background: #f8f9fa;
-      padding: 1rem;
-      border-radius: 4px;
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-      color: #333;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      max-height: 200px;
-      overflow-y: auto;
+      background: #f8f9fa; padding: 1rem; border-radius: 4px;
+      margin-top: 1.5rem; font-size: 0.9rem; color: #333;
+      white-space: pre-wrap; word-wrap: break-word;
+      max-height: 200px; overflow-y: auto;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Markdown 上傳工具</h1>
+    <h1>多文件上傳工具</h1>
     <form id="uploadForm">
       <label>
-        檔案 (.md):
-        <input type="file" name="file" accept=".md" required>
+        選擇檔案 (.md, .png, .jpg, .gif, .mp4):
+        <input type="file" name="file"
+               accept=".md,.png,.jpg,.jpeg,.gif,.mp4" required>
       </label>
       <label>
         上傳到子資料夾 (可留空):
-        <input type="text" name="targetPath" placeholder="例如 guides/intro">
+        <input type="text" name="targetPath"
+               placeholder="例如 guides/intro">
       </label>
       <button type="submit">上傳到 GitHub</button>
     </form>
@@ -97,7 +66,7 @@
   </div>
 
   <script>
-    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+    document.getElementById('uploadForm').addEventListener('submit', async e => {
       e.preventDefault();
       const form = e.currentTarget;
       const file = form.file.files[0];
@@ -106,27 +75,31 @@
       if (!file) return;
       result.textContent = '上傳中…';
 
-      // 讀取檔案並轉 Base64
-      const contentBase64 = await new Promise((res) => {
+      // 讀檔並 base64
+      const contentBase64 = await new Promise(res => {
         const reader = new FileReader();
         reader.onload = () => res(btoa(reader.result));
         reader.readAsBinaryString(file);
       });
 
       try {
-        const response = await fetch('/.netlify/functions/upload-md', {
+        const resp = await fetch('/.netlify/functions/upload-md', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fileName: file.name, contentBase64, targetPath })
+          body: JSON.stringify({
+            fileName: file.name,
+            contentBase64,
+            targetPath
+          })
         });
-        const body = await response.json();
+        const body = await resp.json();
         if (body.ok) {
-          result.textContent = '✅ 上傳成功！路徑：' + body.path;
+          result.textContent = `✅ 上傳成功！路徑：${body.path}`;
         } else {
-          result.textContent = '❌ 上傳失敗：' + (body.error || response.status);
+          result.textContent = `❌ 上傳失敗：${body.error||resp.status}`;
         }
       } catch (err) {
-        result.textContent = '❌ 上傳失敗：' + err.message;
+        result.textContent = `❌ 上傳失敗：${err.message}`;
       }
     });
   </script>
