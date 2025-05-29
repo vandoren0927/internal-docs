@@ -2,23 +2,113 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
-  <title>Markdown 上傳工具（無需登入）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Markdown 上傳工具</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; }
-    input, button { font-size: 1rem; margin: 0.5rem 0; }
-    pre { background: #f4f4f4; padding: 1rem; }
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    input[type="file"],
+    input[type="text"] {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      margin-top: 0.25rem;
+      width: 100%;
+    }
+
+    button {
+      margin-top: 1.25rem;
+      padding: 0.75rem;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    pre {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #333;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 200px;
+      overflow-y: auto;
+    }
   </style>
 </head>
 <body>
-  <h1>Markdown 上傳工具（無需登入）</h1>
-  <form id="uploadForm">
-    <label>檔案 (.md): <input type="file" name="file" accept=".md" required></label><br>
-    <label>上傳到子資料夾 (可空白):
-      <input type="text" name="targetPath" placeholder="例如 guides/intro">
-    </label><br>
-    <button type="submit">上傳到 GitHub</button>
-  </form>
-  <pre id="result"></pre>
+  <div class="container">
+    <h1>Markdown 上傳工具</h1>
+    <form id="uploadForm">
+      <label>
+        檔案 (.md):
+        <input type="file" name="file" accept=".md" required>
+      </label>
+      <label>
+        上傳到子資料夾 (可留空):
+        <input type="text" name="targetPath" placeholder="例如 guides/intro">
+      </label>
+      <button type="submit">上傳到 GitHub</button>
+    </form>
+    <pre id="result"></pre>
+  </div>
 
   <script>
     // 使用 prompt() 動態輸入你的 GitHub Token（只需 contents:write 權限）
@@ -49,9 +139,9 @@
         const resp = await fetch(
           `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(
             ['docs', targetPath, file.name].filter(Boolean).join('/')
-          )}?ref=${BRANCH}`,
-          { headers: { Authorization: `token ${GITHUB_TOKEN}` } }
-        );
+          )}?ref=${BRANCH}`, {
+          headers: { Authorization: `token ${GITHUB_TOKEN}` }
+        });
         if (resp.ok) {
           const json = await resp.json();
           sha = json.sha;
@@ -62,21 +152,19 @@
       const putResp = await fetch(
         `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(
           ['docs', targetPath, file.name].filter(Boolean).join('/')
-        )}`,
-        {
-          method: 'PUT',
-          headers: {
-            Authorization: `token ${GITHUB_TOKEN}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: `Upload ${file.name} via static uploader`,
-            content,
-            branch: BRANCH,
-            sha
-          })
-        }
-      );
+        )}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: `Upload ${file.name} via static uploader`,
+          content,
+          branch: BRANCH,
+          sha
+        })
+      });
 
       if (putResp.ok) {
         result.textContent = '✅ 上傳成功！路徑：' +
