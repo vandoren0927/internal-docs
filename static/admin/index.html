@@ -5,20 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>多文件上傳工具</title>
   <style>
-    /* ...同上面美化样式... */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: #f0f2f5;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; padding: 1rem;
+    }
+    .container {
+      background: #fff; padding: 2rem;
+      border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 400px; width: 100%;
+    }
+    h1 {
+      text-align: center; font-size: 1.5rem; font-weight: 700;
+      margin-bottom: 1.5rem; color: #333;
+    }
+    form { display: flex; flex-direction: column; }
+    label {
+      font-weight: 500; margin-bottom: 0.5rem;
+      color: #555; font-size: 0.95rem;
+    }
+    select, input[type="file"], input[type="text"] {
+      padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;
+      font-size: 1rem; margin-top: 0.25rem; width: 100%;
+    }
+    button {
+      margin-top: 1.25rem; padding: 0.75rem;
+      background-color: #007bff; color: #fff; border: none;
+      border-radius: 4px; font-size: 1rem; font-weight: 500;
+      cursor: pointer; transition: background-color 0.2s ease;
+    }
+    button:hover { background-color: #0056b3; }
+    pre {
+      background: #f8f9fa; padding: 1rem; border-radius: 4px;
+      margin-top: 1.5rem; font-size: 0.9rem; color: #333;
+      white-space: pre-wrap; word-wrap: break-word;
+      max-height: 200px; overflow-y: auto;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>多文件上傳工具</h1>
     <form id="uploadForm">
-      <label>選擇檔案 (.md, .png, .jpg, .gif, .mp4):<br>
-        <input type="file" name="file"
-               accept=".md,.png,.jpg,.jpeg,.gif,.mp4" required>
+      <label>
+        文件類型：
+        <select name="fileType">
+          <option value="md">Markdown (.md)</option>
+          <option value="media">媒體檔 (png, jpg, gif, mp4)</option>
+        </select>
       </label>
-      <label>上傳到子資料夾 (可留空):<br>
-        <input type="text" name="targetPath"
-               placeholder="例如 guides/intro">
+      <label>
+        選擇檔案：
+        <input type="file" name="file" required>
+      </label>
+      <label>
+        上傳到子資料夾 (可留空)：
+        <input type="text" name="targetPath" placeholder="例如 guides/intro">
       </label>
       <button type="submit">上傳到 GitHub</button>
     </form>
@@ -29,33 +74,35 @@
     document.getElementById('uploadForm').addEventListener('submit', async e => {
       e.preventDefault();
       const form = e.currentTarget;
+      const fileType = form.fileType.value;
       const file = form.file.files[0];
       const targetPath = form.targetPath.value.trim();
       const result = document.getElementById('result');
-      result.textContent = '上傳中…';
       if (!file) return;
+      result.textContent = '上傳中…';
 
-      // 讀文件並 base64
+      // 讀檔並 base64
       const contentBase64 = await new Promise(res => {
         const reader = new FileReader();
         reader.onload = () => res(btoa(reader.result));
         reader.readAsBinaryString(file);
       });
 
-      let json;
       try {
         const resp = await fetch('/.netlify/functions/upload-md', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fileName: file.name, contentBase64, targetPath })
+          body: JSON.stringify({
+            fileType,
+            fileName: file.name,
+            contentBase64,
+            targetPath
+          })
         });
-        // 试着解析 JSON
         const text = await resp.text();
-        try {
-          json = JSON.parse(text);
-        } catch {
-          throw new Error(`Server 非 JSON 回應：${text}`);
-        }
+        let json;
+        try { json = JSON.parse(text); }
+        catch { throw new Error(`伺服器回應非 JSON：${text}`); }
 
         if (resp.ok && json.ok) {
           result.textContent = `✅ 上傳成功！路徑：${json.path}`;
