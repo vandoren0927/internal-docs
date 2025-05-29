@@ -2,50 +2,53 @@ import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
-/** Docusaurus 站點設定（routeBasePath 改為 "kb"） */
+/**
+ * Docusaurus 配置檔
+ */
 const config: Config = {
   // ————————————————— 基本資訊 —————————————————
   title: 'Internal Docs',
   tagline: 'Company Knowledge Base',
   favicon: 'img/favicon.ico',
 
-  // GitHub Pages 網址
+  // GitHub Pages 部署網址
   url: 'https://vandoren0927.github.io',
-  baseUrl: '/internal-docs/',                 // 使用者站（根路徑）
+  baseUrl: '/internal-docs/',
 
+  // 部署分支與路徑規則
   trailingSlash: true,
   deploymentBranch: 'gh-pages',
   organizationName: 'vandoren0927',
   projectName: 'internal-docs',
 
-  // ————————————————— Links 與錯誤處理 —————————————————
+  // 錯誤處理
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
-  // ————————————————— i18n —————————————————
+  // 多語系設定
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
   },
 
-  // ————————————————— 預設模板 —————————————————
+  // ————————————————— Presets 設定 —————————————————
   presets: [
     [
       'classic',
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          routeBasePath: 'kb',          // ★ 替換原本的 /docs 前綴
-          editUrl: 'https://github.com/vandoren0927/internal-docs/tree/main/',
-        },
+          routeBasePath: 'kb',
+          editUrl: 'https://github.com/vandoren0927/internal-docs/tree/main/docs/',
+        } satisfies Preset.Options['docs'],
         blog: {
           showReadingTime: true,
-          editUrl: 'https://github.com/vandoren0927/internal-docs/tree/main/',
-        },
+          editUrl: 'https://github.com/vandoren0927/internal-docs/tree/main/blog/',
+        } satisfies Preset.Options['blog'],
         theme: {
           customCss: './src/css/custom.css',
-        },
-      } satisfies Preset.Options,
+        } satisfies Preset.Options['theme'],
+      },
     ],
   ],
 
@@ -56,7 +59,7 @@ const config: Config = {
       title: 'Internal Docs',
       logo: { alt: 'Site Logo', src: 'img/logo.svg' },
       items: [
-        { type: 'docSidebar', sidebarId: 'docsSidebar', position: 'left', label: 'Docs' },
+        { type: 'doc', docId: 'index', position: 'left', label: 'Docs' },
         { to: '/blog', label: 'Blog', position: 'left' },
         { href: 'https://github.com/vandoren0927/internal-docs', label: 'GitHub', position: 'right' },
       ],
@@ -66,7 +69,7 @@ const config: Config = {
       links: [
         {
           title: 'Docs',
-          items: [{ label: 'Overview', to: '/kb/index' }],
+          items: [{ label: '首頁', to: '/kb/' }],
         },
         {
           title: 'Community',
@@ -84,7 +87,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Internal Docs. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Internal Docs.`, 
     },
     prism: {
       theme: prismThemes.github,
