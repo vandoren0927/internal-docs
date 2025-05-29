@@ -6,13 +6,7 @@
   <title>Markdown 上傳工具</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Noto Sans TC', sans-serif;
       background-color: #f0f2f5;
@@ -22,16 +16,14 @@
       min-height: 100vh;
       padding: 1rem;
     }
-
     .container {
       background: #ffffff;
       padding: 2rem;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       max-width: 400px;
       width: 100%;
     }
-
     h1 {
       font-size: 1.5rem;
       font-weight: 700;
@@ -39,19 +31,16 @@
       text-align: center;
       color: #333;
     }
-
     form {
       display: flex;
       flex-direction: column;
     }
-
     label {
       font-weight: 500;
       margin-bottom: 0.5rem;
       color: #555;
       font-size: 0.95rem;
     }
-
     input[type="file"],
     input[type="text"] {
       padding: 0.5rem;
@@ -61,7 +50,6 @@
       margin-top: 0.25rem;
       width: 100%;
     }
-
     button {
       margin-top: 1.25rem;
       padding: 0.75rem;
@@ -74,11 +62,9 @@
       cursor: pointer;
       transition: background-color 0.2s ease;
     }
-
     button:hover {
       background-color: #0056b3;
     }
-
     pre {
       background: #f8f9fa;
       padding: 1rem;
@@ -111,12 +97,6 @@
   </div>
 
   <script>
-    // 使用 prompt() 動態輸入你的 GitHub Token（只需 contents:write 權限）
-    const GITHUB_TOKEN = prompt('請貼上你的 GitHub Token（只需 contents:write 權限）').trim();
-    const OWNER = 'vandoren0927';
-    const REPO = 'internal-docs';
-    const BRANCH = 'main';
-
     document.getElementById('uploadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const form = e.currentTarget;
@@ -127,51 +107,26 @@
       result.textContent = '上傳中…';
 
       // 讀取檔案並轉 Base64
-      const content = await new Promise((res) => {
+      const contentBase64 = await new Promise((res) => {
         const reader = new FileReader();
         reader.onload = () => res(btoa(reader.result));
         reader.readAsBinaryString(file);
       });
 
-      // 嘗試取得既有 sha（若檔案已存在則更新，否則新建）
-      let sha;
       try {
-        const resp = await fetch(
-          `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(
-            ['docs', targetPath, file.name].filter(Boolean).join('/')
-          )}?ref=${BRANCH}`, {
-          headers: { Authorization: `token ${GITHUB_TOKEN}` }
+        const response = await fetch('/.netlify/functions/upload-md', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fileName: file.name, contentBase64, targetPath })
         });
-        if (resp.ok) {
-          const json = await resp.json();
-          sha = json.sha;
+        const body = await response.json();
+        if (body.ok) {
+          result.textContent = '✅ 上傳成功！路徑：' + body.path;
+        } else {
+          result.textContent = '❌ 上傳失敗：' + (body.error || response.status);
         }
-      } catch {}
-
-      // 提交到 GitHub
-      const putResp = await fetch(
-        `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(
-          ['docs', targetPath, file.name].filter(Boolean).join('/')
-        )}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `token ${GITHUB_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: `Upload ${file.name} via static uploader`,
-          content,
-          branch: BRANCH,
-          sha
-        })
-      });
-
-      if (putResp.ok) {
-        result.textContent = '✅ 上傳成功！路徑：' +
-          ['docs', targetPath, file.name].filter(Boolean).join('/');
-      } else {
-        const err = await putResp.json();
-        result.textContent = '❌ 上傳失敗：' + (err.message || putResp.status);
+      } catch (err) {
+        result.textContent = '❌ 上傳失敗：' + err.message;
       }
     });
   </script>
